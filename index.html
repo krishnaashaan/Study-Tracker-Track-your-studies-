@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="notification.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="manifest" href="/manifest.json">
+</head>
+<body class="light-mode">
+    <div class="container">
+        <header>
+            <h1>Study Tracker</h1>
+            <div class="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </div>
+        </header>
+
+        <nav>
+            <ul>
+                <li class="active"><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="ach.html"><i class="fas fa-trophy"></i> Achievements</a></li>
+                <li><a href="stat.html"><i class="fas fa-chart-line"></i> Statistics</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section class="stats-overview">
+                <div class="stat-card">
+                    <h3>Today's Study</h3>
+                    <p id="today-total">0 min</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Streak</h3>
+                    <p id="streak-count">0 days</p>
+                </div>
+                <div class="stat-card">
+                    <h3>XP</h3>
+                    <p id="xp-count">0 XP</p>
+                </div>
+            </section>
+
+            <section id="daily-goals-container" class="daily-goals-container">
+                <!-- Daily goals will be added here dynamically -->
+            </section>
+
+            <section class="study-form">
+                <h2>Add Study Session</h2>
+                <form id="study-form">
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" placeholder="Enter subject name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Time (minutes)</label>
+                        <input type="number" id="time" min="1" placeholder="Enter time in minutes" required>
+                    </div>
+                    <button type="submit" class="btn primary">Add Session</button>
+                </form>
+            </section>
+
+            <section class="chart-container">
+                <h2>Today's Study Distribution</h2>
+                <div class="chart-wrapper">
+                    <canvas id="study-chart"></canvas>
+                </div>
+            </section>
+
+            <section class="today-sessions">
+                <h2>Today's Sessions</h2>
+                <div id="sessions-list" class="sessions-list">
+                    <!-- Sessions will be added here dynamically -->
+                </div>
+            </section>
+
+            <section class="actions">
+                <button id="reset-data" class="btn danger">Reset All Data</button>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+       if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js")
+      .then((registration) => {
+        console.log("Service Worker registered:", registration);
+      })
+      .catch((error) => {
+        console.log("Service Worker registration failed:", error);
+      });
+  });
+}
+    </script>
+</body>
+</html>
+
