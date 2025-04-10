@@ -5,13 +5,13 @@
   "display": "standalone",
   "icons": [
   {
-    "src": "icon192x192.png",  
-    "sizes": "192x192",
+    "src": "appicon.png",  
+    "sizes": "1024x1024",
     "type": "image/png"
   },
   {
-    "src": "icon512x512.png",
-    "sizes": "512x512",
+    "src": "appicon.png",
+    "sizes": "1024x1024",
     "type": "image/png"
   }
   ]

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer - Study Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="pomodoro.css">
+    <link rel="stylesheet" href="notification.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="light-mode">
+    <div class="container">
+        <header>
+            <h1>Pomodoro Timer</h1>
+            <div class="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </div>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="ach.html"><i class="fas fa-trophy"></i> Achievements</a></li>
+                <li><a href="stat.html"><i class="fas fa-chart-line"></i> Statistics</a></li>
+                <li><a href="store.html"><i class="fas fa-store"></i> Store</a></li>
+                <li class="active"><a href="pomodoro.html"><i class="fas fa-clock"></i> Pomodoro</a></li>
+                <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section class="stats-overview">
+                <div class="stat-card">
+                    <h3>Today's Focus</h3>
+                    <p id="today-focus">0 min</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Sessions Completed</h3>
+                    <p id="sessions-completed">0</p>
+                </div>
+            </section>
+
+            <section class="pomodoro-container">
+                <div class="pomodoro-modes">
+                    <button class="mode-btn active" data-mode="focus">Focus</button>
+                    <button class="mode-btn" data-mode="short-break">Short Break</button>
+                    <button class="mode-btn" data-mode="long-break">Long Break</button>
+                </div>
+
+                <div class="timer-container">
+                    <div class="timer-ring-container">
+                        <svg class="timer-ring" width="300" height="300">
+                            <circle class="timer-ring-bg" cx="150" cy="150" r="120" />
+                            <circle class="timer-ring-progress" cx="150" cy="150" r="120" />
+                        </svg>
+                        <div class="timer-display">
+                            <div class="time">25:00</div>
+                            <div class="session-label" id="current-session-label">Focus Time</div>
+                        </div>
+                    </div>
+
+                    <div class="timer-controls">
+                        <button id="start-btn" class="btn primary"><i class="fas fa-play"></i> Start</button>
+                        <button id="pause-btn" class="btn secondary" disabled><i class="fas fa-pause"></i> Pause</button>
+                        <button id="reset-btn" class="btn danger"><i class="fas fa-redo"></i> Reset</button>
+                    </div>
+                </div>
+
+                <div class="session-info">
+                    <div class="session-counter">
+                        <span>Sessions: </span>
+                        <span id="session-count">0</span>
+                    </div>
+                    <div class="session-input">
+                        <label for="session-label-input">What are you working on?</label>
+                        <div class="input-group">
+                            <input type="text" id="session-label-input" placeholder="e.g., Math homework">
+                            <select id="session-subject">
+                                <option value="">Select subject (optional)</option>
+                                <option value="Mathematics">Mathematics</option>
+                                <option value="Science">Science</option>
+                                <option value="Language">Language</option>
+                                <option value="History">History</option>
+                                <option value="Art">Art</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="pomodoro-settings">
+                <h2>Timer Settings</h2>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <label for="focus-duration">Focus Duration (minutes)</label>
+                        <input type="number" id="focus-duration" min="1" max="60" value="25">
+                    </div>
+                    <div class="setting-item">
+                        <label for="short-break-duration">Short Break (minutes)</label>
+                        <input type="number" id="short-break-duration" min="1" max="30" value="5">
+                    </div>
+                    <div class="setting-item">
+                        <label for="long-break-duration">Long Break (minutes)</label>
+                        <input type="number" id="long-break-duration" min="1" max="60" value="15">
+                    </div>
+                    <div class="setting-item">
+                        <label for="long-break-interval">Long Break After (sessions)</label>
+                        <input type="number" id="long-break-interval" min="1" max="10" value="4">
+                    </div>
+                    <div class="setting-item">
+                        <label for="auto-start-breaks">Auto-start Breaks</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="auto-start-breaks">
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label for="auto-start-focus">Auto-start Focus</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="auto-start-focus">
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label for="sound-enabled">Sound Notification</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="sound-enabled" checked>
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label for="save-to-stats">Save to Study Stats</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="save-to-stats" checked>
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </div>
+                </div>
+                <button id="save-settings" class="btn primary">Save Settings</button>
+            </section>
+
+            <section class="pomodoro-history">
+                <h2>Today's Sessions</h2>
+                <div class="history-list" id="session-history">
+                    <!-- Session history will be added here dynamically -->
+                    <p class="empty-message">No sessions completed today. Start your first Pomodoro!</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <audio id="notification-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+
+    <script src="pomodoro.js"></script>
+</body>
+</html>

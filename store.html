@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Store </title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="store.css">
+  <link rel="stylesheet" href="notification.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="light-mode">
+  <div class="container">
+      <header>
+          <h1>Study Store</h1>
+          <div class="theme-toggle">
+              <i class="fas fa-moon"></i>
+          </div>
+      </header>
+
+      <nav>
+          <ul>
+              <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+              <li><a href="ach.html"><i class="fas fa-trophy"></i> Achievements</a></li>
+              <li><a href="stat.html"><i class="fas fa-chart-line"></i> Statistics</a></li>
+              <li class="active"><a href="store.html"><i class="fas fa-store"></i> Store</a></li>
+              <li ><a href="pomodoro.html"><i class="fas fa-clock"></i> Pomodoro</a></li>
+              <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+            </ul>
+      </nav>
+
+      <main>
+          <section class="stats-overview">
+              <div class="stat-card">
+                  <h3>Available XP</h3>
+                  <p id="available-xp">0 XP</p>
+              </div>
+              <div class="stat-card">
+                  <h3>Items Owned</h3>
+                  <p id="items-owned">0</p>
+              </div>
+              <div class="stat-card">
+                  <h3>Streak Tokens</h3>
+                  <p id="streak-tokens">0</p>
+              </div>
+          </section>
+
+          <section class="store-container">
+              <h2>Available Items</h2>
+              <div class="store-tabs">
+                  <button class="tab-btn active" data-tab="badges">Badges</button>
+                  <button class="tab-btn" data-tab="tokens">Streak Tokens</button>
+                  <button class="tab-btn" data-tab="themes">Themes</button>
+              </div>
+
+              <div id="badges-tab" class="store-tab-content active">
+                  <div class="store-items-grid">
+                      <!-- Badges will be added here dynamically -->
+                  </div>
+              </div>
+
+              <div id="tokens-tab" class="store-tab-content">
+                  <div class="store-items-grid">
+                      <div class="store-item" data-id="streak_token">
+                          <div class="item-icon">
+                              <i class="fas fa-calendar-check"></i>
+                          </div>
+                          <div class="item-details">
+                              <h3>Streak Revival Token</h3>
+                              <p>Restore a broken streak</p>
+                              <div class="item-price">100 XP</div>
+                          </div>
+                          <button class="btn primary buy-btn" data-id="streak_token" data-price="100">Buy</button>
+                      </div>
+                  </div>
+              </div>
+
+              <div id="themes-tab" class="store-tab-content">
+                  <div class="store-items-grid">
+                      <div class="store-item" data-id="theme_dark_forest">
+                          <div class="item-icon theme-preview dark-forest">
+                              <i class="fas fa-tree"></i>
+                          </div>
+                          <div class="item-details">
+                              <h3>Dark Forest Theme</h3>
+                              <p>Deep greens and earthy tones</p>
+                              <div class="item-price">200 XP</div>
+                          </div>
+                          <button class="btn primary buy-btn" data-id="theme_dark_forest" data-price="200">Buy</button>
+                      </div>
+                      <div class="store-item" data-id="theme_ocean_blue">
+                          <div class="item-icon theme-preview ocean-blue">
+                              <i class="fas fa-water"></i>
+                          </div>
+                          <div class="item-details">
+                              <h3>Ocean Blue Theme</h3>
+                              <p>Calming blues and aqua tones</p>
+                              <div class="item-price">200 XP</div>
+                          </div>
+                          <button class="btn primary buy-btn" data-id="theme_ocean_blue" data-price="200">Buy</button>
+                      </div>
+                      <div class="store-item" data-id="theme_sunset">
+                          <div class="item-icon theme-preview sunset">
+                              <i class="fas fa-sun"></i>
+                          </div>
+                          <div class="item-details">
+                              <h3>Sunset Theme</h3>
+                              <p>Warm oranges and reds</p>
+                              <div class="item-price">200 XP</div>
+                          </div>
+                          <button class="btn primary buy-btn" data-id="theme_sunset" data-price="200">Buy</button>
+                      </div>
+          </section>
+
+          <section class="inventory-container">
+              <h2>Your Inventory</h2>
+              <div class="inventory-tabs">
+                  <button class="tab-btn active" data-tab="inv-badges">Badges</button>
+                  <button class="tab-btn" data-tab="inv-themes">Themes</button>
+              </div>
+
+              <div id="inv-badges-tab" class="inventory-tab-content active">
+                  <div id="badges-inventory" class="inventory-grid">
+                      <p class="empty-inventory">You don't own any badges yet. Purchase some from the store!</p>
+                  </div>
+              </div>
+
+              <div id="inv-themes-tab" class="inventory-tab-content">
+                  <div id="themes-inventory" class="inventory-grid">
+                      <p class="empty-inventory">You don't own any themes yet. Purchase some from the store!</p>
+                  </div>
+              </div>
+          </section>
+      </main>
+  </div>
+
+  <div id="use-token-modal" class="modal">
+      <div class="modal-content">
+          <span class="close-modal">&times;</span>
+          <h2>Use Streak Revival Token</h2>
+          <p>Are you sure you want to use a Streak Revival Token to restore your streak?</p>
+          <p>Current streak: <span id="current-streak">0</span> days</p>
+          <p>After using token: <span id="new-streak">0</span> days</p>
+          <div class="modal-actions">
+              <button id="use-token-btn" class="btn primary">Use Token</button>
+              <button id="cancel-token-btn" class="btn secondary">Cancel</button>
+          </div>
+      </div>
+  </div>
+
+  <script src="store.js"></script>
+</body>
+</html>
+

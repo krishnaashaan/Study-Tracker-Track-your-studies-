@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Study Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="profile-effects.css">
+    <link rel="stylesheet" href="notification.css">
+    <link rel="stylesheet" href="streak-animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="light-mode">
+    <div class="container">
+        <header>
+            <h1>Your Profile</h1>
+            <div class="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </div>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="ach.html"><i class="fas fa-trophy"></i> Achievements</a></li>
+                <li><a href="stat.html"><i class="fas fa-chart-line"></i> Statistics</a></li>
+                <li><a href="store.html"><i class="fas fa-store"></i> Store</a></li>
+                <li><a href="pomodoro.html"><i class="fas fa-clock"></i> Pomodoro</a></li>
+                <li class="active"><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section class="profile-header">
+                <div class="profile-avatar-container">
+                    <div class="profile-avatar" id="profile-avatar">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="profile-frame" id="profile-frame"></div>
+                    <div class="streak-badge" id="streak-badge">
+                        <i class="fas fa-fire"></i> 0
+                    </div>
+                </div>
+                <div class="profile-info">
+                    <div class="profile-name-container">
+                        <h2 id="profile-name">Scholar</h2>
+                        <button id="edit-name-btn" class="btn secondary small"><i class="fas fa-edit"></i></button>
+                    </div>
+                    <div class="profile-title" id="profile-title">Dedicated Learner</div>
+                    <div class="profile-stats">
+                        <div class="profile-stat">
+                            <div class="stat-label">Level</div>
+                            <div class="stat-value" id="profile-level">1</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="stat-label">XP</div>
+                            <div class="stat-value" id="profile-xp">0</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="stat-label">Streak</div>
+                            <div class="stat-value" id="profile-streak">0</div>
+                        </div>
+                    </div>
+                    <div class="profile-joined">Member since <span id="profile-joined-date">Today</span></div>
+                </div>
+                 <!-- Edit Name Modal -->
+    <div id="edit-name-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Edit Display Name</h2>
+            <form id="edit-name-form">
+                <div class="form-group">
+                    <label for="display-name">Display Name</label>
+                    <input type="text" id="display-name" maxlength="20" required>
+                </div>
+                <button type="submit" class="btn primary">Save</button>
+            </form>
+        </div>
+    </div>
+            </section>
+
+            <section class="profile-customization">
+                <h2>Customization</h2>
+                
+                <div class="customization-section">
+                    <h3>Avatar</h3>
+                    <div class="avatar-options" id="avatar-options">
+                        <!-- Avatars will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="customization-section">
+                    <h3>Avatar Frame</h3>
+                    <div class="frame-options" id="frame-options">
+                        <!-- Frames will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="customization-section">
+                    <h3>Title</h3>
+                    <div class="title-options" id="title-options">
+                        <!-- Titles will be added here dynamically -->
+                    </div>
+                </div>
+            </section>
+
+            <section class="profile-unlockables">
+                <h2>Unlockable Items</h2>
+                <p class="section-description">Continue studying and leveling up to unlock these special items!</p>
+                
+                <div class="unlockables-grid" id="unlockables-grid">
+                    <!-- Unlockable items will be added here dynamically -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+   
+
+    <script src="profile.js"></script>
+</body>
+</html>

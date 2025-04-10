@@ -1,0 +1,296 @@
+/* Daily Quote/Tip Container */
+.daily-content-container {
+    background-color: var(--card-bg-light);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+  }
+  
+  body.dark-mode .daily-content-container {
+    background-color: var(--card-bg-dark);
+    box-shadow: var(--shadow-dark);
+  }
+  
+  .daily-content-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background-color: var(--primary-color);
+  }
+  
+  .daily-content-type {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .daily-content-text {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  
+  .daily-content-author,
+  .daily-content-title {
+    font-weight: bold;
+    text-align: right;
+    color: var(--text-color-light);
+  }
+  
+  body.dark-mode .daily-content-author,
+  body.dark-mode .daily-content-title {
+    color: var(--text-color-dark);
+  }
+  
+  /* Level System Styles */
+  .level-container {
+    background-color: var(--card-bg-light);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition);
+  }
+  
+  body.dark-mode .level-container {
+    background-color: var(--card-bg-dark);
+    box-shadow: var(--shadow-dark);
+  }
+  
+  .level-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .level-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+  
+  .level-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-light);
+    border-radius: 50%;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    position: relative;
+  }
+  
+  body.dark-mode .level-badge {
+    background-color: var(--primary-dark);
+  }
+  
+  .level-badge::after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .level-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .level-name {
+    font-weight: bold;
+  }
+  
+  .level-progress-container {
+    width: 100%;
+    height: 10px;
+    background-color: var(--border-color-light);
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 10px 0;
+  }
+  
+  body.dark-mode .level-progress-container {
+    background-color: var(--border-color-dark);
+  }
+  
+  .level-progress-bar {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 5px;
+    transition: width 0.5s ease;
+  }
+  
+  .level-progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-color-light);
+  }
+  
+  body.dark-mode .level-progress-text {
+    color: var(--text-color-dark);
+  }
+  
+  .level-perks {
+    margin-top: 15px;
+  }
+  
+  .level-perks-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+  }
+  
+  .level-perks-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .level-perk-item {
+    background-color: var(--bg-color-light);
+    border-radius: 5px;
+    padding: 10px;
+    flex: 1 1 calc(50% - 10px);
+    min-width: 200px;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition);
+  }
+  
+  body.dark-mode .level-perk-item {
+    background-color: var(--bg-color-dark);
+    box-shadow: var(--shadow-dark);
+  }
+  
+  .level-perk-item:hover {
+    transform: translateY(-3px);
+  }
+  
+  .level-perk-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+  }
+  
+  .level-perk-level {
+    background-color: var(--primary-color);
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+  
+  .level-perk-name {
+    font-weight: bold;
+  }
+  
+  .level-perk-description {
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+    opacity: 0.8;
+  }
+  
+  body.dark-mode .level-perk-description {
+    color: var(--text-color-dark);
+  }
+  
+  /* Level up animation */
+  @keyframes levelUp {
+    0% {
+      transform: scale(1);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.5);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .level-up-notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 1000;
+    animation: levelUp 1.5s ease-in-out;
+  }
+  
+  .level-up-notification h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+  }
+  
+  .level-up-notification p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  
+  .level-up-notification .level-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin: 20px 0;
+  }
+  
+  .level-up-notification .perk-unlocked {
+    font-style: italic;
+    color: var(--accent-color);
+  }
+  
+  .level-up-notification button {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: var(--transition);
+  }
+  
+  .level-up-notification button:hover {
+    background-color: var(--primary-dark);
+  }
+  

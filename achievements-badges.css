@@ -1,0 +1,116 @@
+/* Compact badges styles for achievements page */
+.equipped-badges-container {
+  background-color: var(--card-bg-light);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: var(--shadow-light);
+  margin-bottom: 20px;
+}
+
+body.dark-mode .equipped-badges-container {
+  background-color: var(--card-bg-dark);
+  box-shadow: var(--shadow-dark);
+}
+
+.equipped-badges-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.badge-item {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-color-light);
+  border-radius: 50px;
+  padding: 8px 16px 8px 8px;
+  box-shadow: var(--shadow-light);
+  transition: var(--transition);
+  max-width: 180px;
+  overflow: hidden;
+}
+
+body.dark-mode .badge-item {
+  background-color: var(--bg-color-dark);
+  box-shadow: var(--shadow-dark);
+}
+
+.badge-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .badge-item:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.badge-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-light);
+  border-radius: 50%;
+  margin-right: 10px;
+  font-size: 1rem;
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.badge-details {
+  overflow: hidden;
+}
+
+.badge-name {
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.badge-description {
+  font-size: 0.75rem;
+  margin: 0;
+  opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Animation classes */
+.badge-animated.pulse .badge-icon i {
+  animation: pulse 2s infinite;
+  display: inline-block;
+}
+
+.badge-animated.rotate .badge-icon i {
+  animation: rotate 4s linear infinite;
+  display: inline-block;
+}
+
+.badge-animated.sparkle .badge-icon {
+  position: relative;
+  overflow: hidden;
+}
+
+.badge-animated.sparkle .badge-icon::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+  animation: sparkle 2s infinite;
+}
+
+@media (max-width: 768px) {
+  .equipped-badges-grid {
+    justify-content: center;
+  }
+}
+

@@ -1,11 +1,10 @@
-const CACHE_NAME = "study-tracker-v1";
+const CACHE_NAME = "study-tracker-v5.0";
 const urlsToCache = [
   "/",
   "/index.html",
   "/styles.css",
   "/app.js",
-  "appicon192x192.png",
-  "appicon512x512.png"
+  "appicon.png",
 ];
 
 self.addEventListener("install", (event) => {

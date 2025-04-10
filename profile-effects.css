@@ -1,0 +1,293 @@
+/* Special effects for profile */
+.animated-avatar {
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 15px rgba(76, 175, 80, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    }
+  }
+  
+  .rainbow-text {
+    background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rainbow-move 6s linear infinite;
+    background-size: 200% 100%;
+  }
+  
+  @keyframes rainbow-move {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 200% 50%;
+    }
+  }
+  
+  .particle-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .particle {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: float 3s infinite ease-in-out;
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0) translateX(0);
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(-100px) translateX(20px);
+      opacity: 0;
+    }
+  }
+  
+  .legendary-aura {
+    position: relative;
+  }
+  
+  .legendary-aura::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, gold, orange, purple, blue, cyan);
+    z-index: -1;
+    animation: rotate 3s linear infinite;
+    opacity: 0.7;
+  }
+  
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .custom-background {
+    position: relative;
+  }
+  
+  .custom-background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="%234CAF50" stroke-width="2"/><circle cx="50" cy="50" r="40" fill="none" stroke="%234CAF50" stroke-width="2"/></svg>');
+    background-size: 100px 100px;
+    opacity: 0.1;
+    z-index: -1;
+  }
+  
+  .animated-background {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .animated-background::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    right: -50%;
+    bottom: -50%;
+    background: linear-gradient(45deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0) 70%);
+    z-index: -1;
+    animation: rotate-bg 10s linear infinite;
+  }
+  
+  @keyframes rotate-bg {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Custom badge styles */
+  .custom-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 3;
+  }
+  
+  /* Badge editor modal */
+  .badge-editor-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .badge-editor-content {
+    background-color: var(--card-bg-light);
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: var(--shadow-light);
+  }
+  
+  body.dark-mode .badge-editor-content {
+    background-color: var(--card-bg-dark);
+    box-shadow: var(--shadow-dark);
+  }
+  
+  .badge-editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .badge-editor-header h2 {
+    margin: 0;
+  }
+  
+  .badge-editor-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-color-light);
+  }
+  
+  body.dark-mode .badge-editor-close {
+    color: var(--text-color-dark);
+  }
+  
+  .badge-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    position: relative;
+  }
+  
+  .badge-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .badge-option {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0 auto;
+  }
+  
+  .badge-option.selected {
+    box-shadow: 0 0 0 2px var(--primary-color);
+  }
+  
+  .badge-color-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .badge-color {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 0 auto;
+  }
+  
+  .badge-color.selected {
+    box-shadow: 0 0 0 2px var(--text-color-light);
+  }
+  
+  body.dark-mode .badge-color.selected {
+    box-shadow: 0 0 0 2px var(--text-color-dark);
+  }
+  
+  .badge-text-input {
+    margin-bottom: 20px;
+  }
+  
+  .badge-text-input input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color-light);
+    border-radius: 5px;
+    background-color: var(--bg-color-light);
+    color: var(--text-color-light);
+  }
+  
+  body.dark-mode .badge-text-input input {
+    border-color: var(--border-color-dark);
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
+  }
+  
+  .badge-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  

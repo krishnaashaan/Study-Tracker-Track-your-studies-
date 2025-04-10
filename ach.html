@@ -1,54 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Achievements - Study Tracker</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Achievements - Study Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="store.css">
+    <link rel="stylesheet" href="achievements-badges.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="light-mode">
-    <div class="container">
-        <header>
-            <h1>Achievements</h1>
-            <div class="theme-toggle">
-                <i class="fas fa-moon"></i>
-            </div>
-        </header>
+  <div class="container">
+      <header>
+          <h1>Achievements</h1>
+          <div class="theme-toggle">
+              <i class="fas fa-moon"></i>
+          </div>
+      </header>
 
-        <nav>
-            <ul>
-                <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li class="active"><a href="ach.html"><i class="fas fa-trophy"></i> Achievements</a></li>
-                <li><a href="stat.html"><i class="fas fa-chart-line"></i> Statistics</a></li>
+      <nav>
+          <ul>
+              <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+              <li class="active"><a href="ach.html"><i class="fas fa-trophy"></i> Achievements</a></li>
+              <li><a href="stat.html"><i class="fas fa-chart-line"></i> Statistics</a></li>
+              <li><a href="store.html"><i class="fas fa-store"></i> Store</a></li>
+              <li ><a href="pomodoro.html"><i class="fas fa-clock"></i> Pomodoro</a></li>
+              <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
             </ul>
-        </nav>
+      </nav>
 
-        <main>
-            <section class="stats-overview">
-                <div class="stat-card">
-                    <h3>Total XP</h3>
-                    <p id="total-xp">0 XP</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Achievements</h3>
-                    <p id="achievements-count">0/30</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Streak</h3>
-                    <p id="streak-count-ach">0 days</p>
-                </div>
-            </section>
+      <main>
+          <section class="stats-overview">
+              <div class="stat-card">
+                  <h3>Total XP</h3>
+                  <p id="total-xp">0 XP</p>
+              </div>
+              <div class="stat-card">
+                  <h3>Achievements</h3>
+                  <p id="achievements-count">0/48</p>
+              </div>
+              <div class="stat-card">
+                  <h3>Streak</h3>
+                  <p id="streak-count-ach">0 days</p>
+              </div>
+          </section>
 
-            <section class="achievements-container">
-                <h2>Your Achievements</h2>
-                <div id="achievements-list" class="achievements-list">
-                    <!-- Achievements will be added here dynamically -->
-                </div>
-            </section>
-        </main>
-    </div>
+          <!-- Add this section to display equipped badges -->
+          <section class="equipped-badges-container">
+              <h2>Your Badges</h2>
+              <div id="equipped-badges" class="equipped-badges-grid">
+                  <!-- Equipped badges will be added here dynamically -->
+              </div>
+          </section>
 
-    <script src="achievements.js"></script>
+          <section class="achievements-container">
+              <h2>Your Achievements</h2>
+              <div id="achievements-list" class="achievements-list">
+                  <!-- Achievements will be added here dynamically -->
+              </div>
+          </section>
+      </main>
+  </div>
+
+  <script src="achievements.js"></script>
 </body>
 </html>
+

@@ -1,0 +1,246 @@
+/* Streak Flame Container */
+.streak-flame-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  z-index: 10;
+}
+
+/* Streak Flame Sizes */
+.streak-flame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(255, 100, 0, 0.2);
+  color: #ff6400;
+  transition: all 0.3s ease;
+}
+
+.streak-flame.size-1 {
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+}
+
+.streak-flame.size-2 {
+  font-size: 1.4rem;
+  width: 45px;
+  height: 45px;
+}
+
+.streak-flame.size-3 {
+  font-size: 1.6rem;
+  width: 50px;
+  height: 50px;
+}
+
+.streak-flame.size-4 {
+  font-size: 1.8rem;
+  width: 55px;
+  height: 55px;
+}
+
+.streak-flame.size-5 {
+  font-size: 2rem;
+  width: 60px;
+  height: 60px;
+}
+
+.streak-flame.size-6 {
+  font-size: 2.2rem;
+  width: 65px;
+  height: 65px;
+}
+
+.streak-flame.size-max {
+  font-size: 2.5rem;
+  width: 70px;
+  height: 70px;
+}
+
+/* Streak Milestone Styles */
+.streak-milestone-7 .streak-flame {
+  color: #4caf50;
+  background-color: rgba(76, 175, 80, 0.2);
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.streak-milestone-30 .streak-flame {
+  color: #2196f3;
+  background-color: rgba(33, 150, 243, 0.2);
+  box-shadow: 0 0 15px rgba(33, 150, 243, 0.6);
+  animation: pulse 2s infinite;
+}
+
+.streak-milestone-100 .streak-flame {
+  color: #9c27b0;
+  background-color: rgba(156, 39, 176, 0.2);
+  box-shadow: 0 0 20px rgba(156, 39, 176, 0.7);
+  animation: pulse 1.5s infinite;
+}
+
+.streak-milestone-365 .streak-flame {
+  color: #f44336;
+  background-color: rgba(244, 67, 54, 0.2);
+  box-shadow: 0 0 25px rgba(244, 67, 54, 0.8);
+  animation: pulse 1s infinite;
+}
+
+.streak-milestone-500 .streak-flame {
+  background: linear-gradient(45deg, #ffd700, #ffa500);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+  animation: rotate 3s linear infinite, pulse 1.5s infinite;
+}
+
+.streak-milestone-1000 .streak-flame {
+  background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  box-shadow: 0 0 35px rgba(255, 0, 0, 0.8);
+  animation: rainbow 3s linear infinite, pulse 1s infinite, rotate 5s linear infinite;
+}
+
+/* Profile Streak Badge */
+.streak-badge {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  background-color: #ff6400;
+  color: white;
+  border-radius: 50%;
+  padding: 5px 8px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.streak-badge i {
+  margin-right: 3px;
+}
+
+/* Milestone badges */
+.streak-badge.milestone-7 {
+  background-color: #4caf50;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.streak-badge.milestone-30 {
+  background-color: #2196f3;
+  box-shadow: 0 0 15px rgba(33, 150, 243, 0.6);
+}
+
+.streak-badge.milestone-100 {
+  background-color: #9c27b0;
+  box-shadow: 0 0 20px rgba(156, 39, 176, 0.7);
+}
+
+.streak-badge.milestone-365 {
+  background-color: #f44336;
+  box-shadow: 0 0 25px rgba(244, 67, 54, 0.8);
+  animation: pulse 2s infinite;
+}
+
+.streak-badge.milestone-500 {
+  background: linear-gradient(45deg, #ffd700, #ffa500);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+}
+
+.streak-badge.milestone-1000 {
+  background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+  box-shadow: 0 0 35px rgba(255, 0, 0, 0.8);
+  animation: rainbow-bg 3s linear infinite;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rainbow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes rainbow-bg {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Fireworks Animation */
+.firework-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.firework {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: explode 1s forwards;
+  opacity: 0;
+}
+
+@keyframes explode {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1);
+    opacity: 0;
+  }
+}
