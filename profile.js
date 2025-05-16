@@ -18,6 +18,29 @@ const frameOptionsElement = document.getElementById("frame-options")
 const titleOptionsElement = document.getElementById("title-options")
 const unlockablesGridElement = document.getElementById("unlockables-grid")
 const themeToggle = document.querySelector(".theme-toggle")
+const themesGridElement = document.getElementById("themes-grid")
+const xpBoostersElement = document.getElementById("xp-boosters")
+const soundPacksElement = document.getElementById("sound-packs")
+const activateBoosterBtn = document.getElementById("activate-booster")
+const boosterStatusElement = document.getElementById("booster-status")
+const soundPlayerElement = document.getElementById("sound-player")
+const soundControlsElement = document.getElementById("sound-controls")
+const streakCountElement = document.getElementById("streak-count")
+const streakCalendarElement = document.getElementById("streak-calendar")
+const streakFreezeCountElement = document.getElementById("streak-freeze-count")
+const buyStreakFreezeBtn = document.getElementById("buy-streak-freeze")
+const streakFreezeModal = document.getElementById("streak-freeze-modal")
+const streakFreezeModalCloseBtn = document.querySelector(".streak-freeze-modal-close")
+const streakFreezeCancelBtn = document.querySelector(".streak-freeze-modal .cancel-btn")
+const streakFreezePurchaseBtn = document.querySelector(".streak-freeze-modal .purchase-btn")
+const totalStudyTimeElement = document.getElementById("total-study-time")
+const totalSessionsElement = document.getElementById("total-sessions")
+const subjectsStudiedElement = document.getElementById("subjects-studied")
+const levelBadgeElement = document.getElementById("level-badge")
+const levelNameElement = document.getElementById("level-name")
+const levelProgressCircleElement = document.getElementById("level-progress-circle")
+const levelProgressTextElement = document.getElementById("level-progress-text")
+const levelPerksListElement = document.getElementById("level-perks-list")
 
 // Profile data structure
 let profileData = {
@@ -29,8 +52,24 @@ let profileData = {
   unlockedAvatars: ["default"],
   unlockedFrames: ["none"],
   unlockedTitles: ["Beginner"],
+  unlockedThemes: ["default"],
+  selectedTheme: "default",
+  unlockedSoundPacks: ["white-noise"],
+  selectedSoundPack: "white-noise",
+  xpBoosters: {
+    small: 0, // 1.5x multiplier
+    medium: 0, // 2x multiplier
+    large: 0, // 3x multiplier
+  },
+  activeBooster: null,
+  boosterEndTime: null,
   badgeText: "★",
   badgeColor: "#4CAF50",
+  // New streak freeze properties
+  streakFreezes: 0,
+  maxStreakFreezes: 3,
+  streakFreezeHistory: [], // Array to track when streak freezes were used
+  streakFreezePrice: 100, // XP cost for a streak freeze
 }
 
 // Available avatars with their unlock requirements
@@ -82,6 +121,67 @@ const avatars = [
     name: "Sage",
     icon: "fa-hat-wizard",
     levelRequired: 15,
+  },
+  // New avatars
+  {
+    id: "detective",
+    name: "Detective",
+    icon: "fa-magnifying-glass",
+    levelRequired: 17,
+  },
+  {
+    id: "chef",
+    name: "Chef",
+    icon: "fa-utensils",
+    levelRequired: 19,
+  },
+  {
+    id: "musician",
+    name: "Musician",
+    icon: "fa-music",
+    levelRequired: 21,
+  },
+  {
+    id: "athlete",
+    name: "Athlete",
+    icon: "fa-person-running",
+    levelRequired: 23,
+  },
+  {
+    id: "doctor",
+    name: "Doctor",
+    icon: "fa-stethoscope",
+    levelRequired: 25,
+  },
+  {
+    id: "engineer",
+    name: "Engineer",
+    icon: "fa-screwdriver-wrench",
+    levelRequired: 27,
+  },
+  {
+    id: "architect",
+    name: "Architect",
+    icon: "fa-compass-drafting",
+    levelRequired: 29,
+  },
+  {
+    id: "philosopher",
+    name: "Philosopher",
+    icon: "fa-brain",
+    levelRequired: 31,
+  },
+  {
+    id: "explorer",
+    name: "Explorer",
+    icon: "fa-earth-americas",
+    levelRequired: 33,
+  },
+  {
+    id: "historian",
+    name: "Historian",
+    icon: "fa-book-open",
+    levelRequired: 35,
   },
 ]
 
@@ -141,64 +241,103 @@ const frames = [
     class: "legendary",
     levelRequired: 20,
   },
+  // New frames
+  {
+    id: "cosmic",
+    name: "Cosmic",
+    class: "cosmic",
+    levelRequired: 25,
+  },
+  {
+    id: "ethereal",
+    name: "Ethereal",
+    class: "ethereal",
+    levelRequired: 30,
+  },
+  {
+    id: "mythic",
+    name: "Mythic",
+    class: "mythic",
+    levelRequired: 35,
+  },
+  {
+    id: "divine",
+    name: "Divine",
+    class: "divine",
+    levelRequired: 40,
+  },
 ]
 
 // Available titles with their unlock requirements
 const titles = [
+  { name: "Beginner", levelRequired: 1 },
+  { name: "Dedicated Learner", levelRequired: 2 },
+  { name: "Knowledge Seeker", levelRequired: 4 },
+  { name: "Scholar", levelRequired: 6 },
+  { name: "Academic", levelRequired: 8 },
+  { name: "Professor", levelRequired: 10 },
+  { name: "Master Scholar", levelRequired: 12 },
+  { name: "Sage", levelRequired: 14 },
+  { name: "Enlightened", levelRequired: 16 },
+  { name: "Genius", levelRequired: 18 },
+  { name: "Legendary Scholar", levelRequired: 20 },
+  { name: "Intellectual Pioneer", levelRequired: 22 },
+  { name: "Wisdom Keeper", levelRequired: 24 },
+  { name: "Knowledge Architect", levelRequired: 26 },
+  { name: "Thought Leader", levelRequired: 28 },
+  { name: "Scholarly Virtuoso", levelRequired: 30 },
+  { name: "Erudite Master", levelRequired: 32 },
+  { name: "Cerebral Luminary", levelRequired: 34 },
+  { name: "Scholarly Paragon", levelRequired: 36 },
+  { name: "Intellectual Sovereign", levelRequired: 38 },
+  { name: "Grand Scholar", levelRequired: 40 },
+  { name: "Scholarly Exemplar", levelRequired: 42 },
+  { name: "Intellectual Luminary", levelRequired: 44 },
+  { name: "Scholarly Eminence", levelRequired: 46 },
+  { name: "Intellectual Paragon", levelRequired: 48 },
+  { name: "Transcendent Scholar", levelRequired: 50 },
+  { name: "Scholarly Virtuoso", levelRequired: 52 },
+  { name: "Intellectual Sovereign", levelRequired: 54 },
+  { name: "Scholarly Illuminator", levelRequired: 56 },
+  { name: "Transcendent Thinker", levelRequired: 58 },
+]
+
+// Available themes with their unlock requirements
+const themes = [
   {
-    id: "beginner",
-    name: "Beginner",
+    id: "default",
+    name: "Default",
+    description: "The standard theme",
     levelRequired: 1,
+    cssClass: "theme-default",
   },
   {
-    id: "dedicated_learner",
-    name: "Dedicated Learner",
-    levelRequired: 2,
-  },
-  {
-    id: "knowledge_seeker",
-    name: "Knowledge Seeker",
-    levelRequired: 4,
-  },
-  {
-    id: "scholar",
-    name: "Scholar",
-    levelRequired: 6,
-  },
-  {
-    id: "academic",
-    name: "Academic",
-    levelRequired: 8,
-  },
-  {
-    id: "professor",
-    name: "Professor",
+    id: "sunset-mode",
+    name: "Sunset Mode",
+    description: "Warm, orange-hued theme inspired by sunset",
     levelRequired: 10,
+    cssClass: "theme-sunset",
   },
   {
-    id: "master_scholar",
-    name: "Master Scholar",
-    levelRequired: 12,
+    id: "midnight-focus",
+    name: "Midnight Focus",
+    description: "Dark blue theme for night-time studying",
+    levelRequired: 15,
+    cssClass: "theme-midnight",
   },
   {
-    id: "sage",
-    name: "Sage",
-    levelRequired: 14,
-  },
-  {
-    id: "enlightened",
-    name: "Enlightened",
-    levelRequired: 16,
-  },
-  {
-    id: "genius",
-    name: "Genius",
-    levelRequired: 18,
-  },
-  {
-    id: "legendary_scholar",
-    name: "Legendary Scholar",
+    id: "neon-hacker",
+    name: "Neon Hacker",
+    description: "Vibrant neon colors on dark background",
     levelRequired: 20,
+    cssClass: "theme-neon",
+  },
+  {
+    id: "nature-calm",
+    name: "Nature Calm",
+    description: "Soothing green theme inspired by nature",
+    levelRequired: 25,
+    cssClass: "theme-nature",
   },
 ]
 
@@ -211,13 +350,7 @@ const unlockables = [
     icon: "fa-star",
     levelRequired: 5,
   },
-  {
-    id: "custom_background",
-    name: "Custom Background",
-    description: "Unlock the ability to set a custom profile background",
-    icon: "fa-image",
-    levelRequired: 8,
-  },
+
   {
     id: "rainbow_text",
     name: "Rainbow Text",
@@ -229,7 +362,7 @@ const unlockables = [
     id: "particle_effects",
     name: "Particle Effects",
     description: "Add subtle particle effects to your profile",
-    icon: "fa-sparkles",
+    icon: "fa-solid fa-wand-magic-sparkles",
     levelRequired: 12,
   },
   {
@@ -261,6 +394,29 @@ function loadData() {
   const savedProfileData = localStorage.getItem("profileData")
   if (savedProfileData) {
     profileData = JSON.parse(savedProfileData)
+
+    // Initialize new properties if they don't exist (for backward compatibility)
+    if (!profileData.unlockedThemes) {
+      profileData.unlockedThemes = ["default"]
+      profileData.selectedTheme = "default"
+    }
+
+    // Initialize streak freeze properties if they don't exist
+    if (profileData.streakFreezes === undefined) {
+      profileData.streakFreezes = 0
+    }
+
+    if (profileData.maxStreakFreezes === undefined) {
+      profileData.maxStreakFreezes = 3
+    }
+
+    if (!profileData.streakFreezeHistory) {
+      profileData.streakFreezeHistory = []
+    }
+
+    if (profileData.streakFreezePrice === undefined) {
+      profileData.streakFreezePrice = 100
+    }
   } else {
     // Initialize with default values and save
     saveData()
@@ -275,6 +431,13 @@ function loadData() {
   updateFrameOptions(studyData)
   updateTitleOptions(studyData)
   updateUnlockables(studyData)
+  updateThemeOptions(studyData)
+  updateStreakModule(studyData)
+  updateStatsModule(studyData)
+  updateLevelModule(studyData)
+
+  // Apply selected theme
+  applyTheme(profileData.selectedTheme)
 }
 
 // Save profile data to localStorage
@@ -353,8 +516,8 @@ function updateAvatarOptions(studyData) {
     const isUnlocked = level >= avatar.levelRequired
     const isSelected = profileData.selectedAvatar === avatar.id
 
-    // If unlocked and not in unlockedAvatars, add it
-    if (isUnlocked && !profileData.unlockedAvatars.includes(avatar.id)) {
+    // Fix: use studyData instead of undefined userData
+    if (isUnlocked && Array.isArray(profileData.unlockedAvatars) && !profileData.unlockedAvatars.includes(avatar.id)) {
       profileData.unlockedAvatars.push(avatar.id)
       saveData()
     }
@@ -364,13 +527,13 @@ function updateAvatarOptions(studyData) {
     avatarOption.dataset.id = avatar.id
 
     avatarOption.innerHTML = `
-      <div class="avatar-preview">
-        <i class="fas ${avatar.icon}"></i>
-      </div>
-      <div class="option-name">${avatar.name}</div>
-      <div class="option-level">Level ${avatar.levelRequired}</div>
-      ${isUnlocked ? "" : '<div class="lock-icon"><i class="fas fa-lock"></i></div>'}
-    `
+    <div class="avatar-preview">
+      <i class="fas ${avatar.icon}"></i>
+    </div>
+    <div class="option-name">${avatar.name}</div>
+    <div class="option-level">Level ${avatar.levelRequired}</div>
+    ${isUnlocked ? "" : '<div class="lock-icon"><i class="fas fa-lock"></i></div>'}
+  `
 
     if (isUnlocked) {
       avatarOption.addEventListener("click", () => selectAvatar(avatar.id))
@@ -394,7 +557,7 @@ function updateFrameOptions(studyData) {
     const isSelected = profileData.selectedFrame === frame.id
 
     // If unlocked and not in unlockedFrames, add it
-    if (isUnlocked && !profileData.unlockedFrames.includes(frame.id)) {
+    if (isUnlocked && profileData.unlockedFrames && !profileData.unlockedFrames.includes(frame.id)) {
       profileData.unlockedFrames.push(frame.id)
       saveData()
     }
@@ -437,7 +600,7 @@ function updateTitleOptions(studyData) {
     const isSelected = profileData.selectedTitle === title.name
 
     // If unlocked and not in unlockedTitles, add it
-    if (isUnlocked && !profileData.unlockedTitles.includes(title.name)) {
+    if (isUnlocked && profileData.unlockedTitles && !profileData.unlockedTitles.includes(title.name)) {
       profileData.unlockedTitles.push(title.name)
       saveData()
     }
@@ -457,6 +620,47 @@ function updateTitleOptions(studyData) {
     }
 
     titleOptionsElement.appendChild(titleOption)
+  })
+}
+
+// Update theme options
+function updateThemeOptions(studyData) {
+  if (!themesGridElement) return
+
+  themesGridElement.innerHTML = ""
+
+  const level = studyData.level || 1
+
+  // Check which themes should be unlocked based on level
+  themes.forEach((theme) => {
+    const isUnlocked = level >= theme.levelRequired
+    const isSelected = profileData.selectedTheme === theme.id
+
+    // If unlocked and not in unlockedThemes, add it
+    if (isUnlocked && profileData.unlockedThemes && !profileData.unlockedThemes.includes(theme.id)) {
+      profileData.unlockedThemes.push(theme.id)
+      saveData()
+    }
+
+    const themeOption = document.createElement("div")
+    themeOption.className = `theme-option ${isUnlocked ? "" : "locked"} ${isSelected ? "selected" : ""}`
+    themeOption.dataset.id = theme.id
+
+    themeOption.innerHTML = `
+      <div class="theme-preview ${theme.cssClass}"></div>
+      <div class="theme-details">
+        <div class="theme-name">${theme.name}</div>
+        <div class="theme-description">${theme.description}</div>
+        <div class="option-level">Level ${theme.levelRequired}</div>
+      </div>
+      ${isUnlocked ? "" : '<div class="lock-icon"><i class="fas fa-lock"></i></div>'}
+    `
+
+    if (isUnlocked) {
+      themeOption.addEventListener("click", () => selectTheme(theme.id))
+    }
+
+    themesGridElement.appendChild(themeOption)
   })
 }
 
@@ -642,7 +846,7 @@ function showBadgeEditor() {
           .join("")}
       </div>
       <div class="badge-text-input">
-        <h3>Custom Text (max 1characters)</h3>
+        <h3>Custom Text (max 2 characters)</h3>
         <input type="text" maxlength="2" value="${profileData.badgeText || ""}" placeholder="★">
       </div>
       <div class="badge-actions">
@@ -764,8 +968,56 @@ function selectTitle(titleName) {
   updateTitleOptions(studyData)
 }
 
+// Select theme
+function selectTheme(themeId) {
+  profileData.selectedTheme = themeId
+  saveData()
+
+  // Apply the theme
+  applyTheme(themeId)
+
+  // Update UI
+  const studyData = JSON.parse(localStorage.getItem("studyTrackerData") || "{}")
+  updateThemeOptions(studyData)
+
+  showNotification("Theme Applied", "Your theme has been updated.")
+}
+
+// Apply theme to the UI
+function applyTheme(themeId) {
+  // Remove all theme classes
+  document.body.classList.remove(...themes.map((theme) => theme.cssClass))
+
+  // Add the selected theme class
+  const selectedTheme = themes.find((theme) => theme.id === themeId)
+  if (selectedTheme) {
+    document.body.classList.add(selectedTheme.cssClass)
+  }
+}
+
 // Edit display name
 function editDisplayName(name) {
+  // Check for developer names
+  const devNames = ["admin", "root", "dev", "developer", "administrator", "superuser"]
+  if (devNames.includes(name.toLowerCase())) {
+    // Ensure shadowAchievementData exists
+    if (!window.shadowAchievementData) {
+      window.shadowAchievementData = {}
+    }
+
+    window.shadowAchievementData.developerNameUsed = true
+
+    // Easter egg message
+    setTimeout(() => {
+      showNotification("Developer Mode", "Nice try! But there's no special access here... or is there?")
+    }, 500)
+
+    // Check for achievement
+    if (window.shadowAchievements) {
+      window.shadowAchievements.checkAchievements()
+    }
+  }
+
   profileData.name = name
   saveData()
 
@@ -811,6 +1063,348 @@ function toggleDarkMode() {
   localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"))
 }
 
+// New function to update the streak module
+function updateStreakModule(studyData) {
+  if (!streakCountElement || !streakCalendarElement || !streakFreezeCountElement) return
+
+  const streak = studyData.streak || 0
+
+  // Update streak count
+  streakCountElement.textContent = streak
+
+  // Update streak calendar
+  updateStreakCalendar(studyData)
+
+  // Update streak freeze count
+  updateStreakFreezeCount()
+}
+
+// Function to update the streak calendar
+function updateStreakCalendar(studyData) {
+  if (!streakCalendarElement) return
+
+  streakCalendarElement.innerHTML = ""
+
+  // Get the last 7 days
+  const today = new Date()
+  const days = []
+
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(today)
+    date.setDate(date.getDate() - i)
+    days.push(date)
+  }
+
+  // Create calendar days
+  days.forEach((day) => {
+    const dayString = day.toLocaleDateString()
+    const isToday = day.toDateString() === today.toDateString()
+
+    // Check if there was activity on this day
+    const hasActivity = studyData.dailyTotals && studyData.dailyTotals[dayString]
+
+    // Check if a streak freeze was used on this day
+    const freezeUsed =
+      profileData.streakFreezeHistory &&
+      profileData.streakFreezeHistory.some((freeze) => new Date(freeze.date).toLocaleDateString() === dayString)
+
+    const dayElement = document.createElement("div")
+    dayElement.className = `streak-day ${hasActivity ? "active" : ""} ${isToday ? "today" : ""} ${freezeUsed ? "freeze" : ""}`
+
+    // Add date number to the day element
+    const dateNumber = document.createElement("span")
+    dateNumber.className = "streak-day-date"
+    dateNumber.textContent = day.getDate()
+    dayElement.appendChild(dateNumber)
+
+    // Add tooltip with date
+    const tooltip = document.createElement("div")
+    tooltip.className = "tooltip"
+    tooltip.textContent = day.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })
+
+    if (freezeUsed) {
+      tooltip.textContent += " (Streak Freeze Used)"
+    } else if (hasActivity) {
+      tooltip.textContent += " (Studied)"
+    } else if (isToday) {
+      tooltip.textContent += " (Today)"
+    } else {
+      tooltip.textContent += " (No Activity)"
+    }
+
+    dayElement.appendChild(tooltip)
+    streakCalendarElement.appendChild(dayElement)
+  })
+}
+
+// Function to update the stats module - Fixed to prevent duplication
+function updateStatsModule(studyData) {
+  if (!totalStudyTimeElement || !totalSessionsElement || !subjectsStudiedElement) return
+
+  // Calculate total study time
+  let totalTime = 0
+  let totalSessions = 0
+  const subjects = new Set()
+
+  // Process daily sessions - only count each session once
+  if (studyData.dailySessions) {
+    Object.values(studyData.dailySessions).forEach((sessions) => {
+      if (Array.isArray(sessions)) {
+        totalSessions += sessions.length
+        sessions.forEach((session) => {
+          if (session && typeof session === "object") {
+            totalTime += session.time || 0
+            if (session.subject) {
+              subjects.add(session.subject)
+            }
+          }
+        })
+      }
+    })
+  }
+
+  // Add today's sessions - ensure we're not double-counting
+  const todayString = new Date().toLocaleDateString()
+  if (
+    studyData.sessions &&
+    Array.isArray(studyData.sessions) &&
+    (!studyData.dailySessions || !studyData.dailySessions[todayString])
+  ) {
+    totalSessions += studyData.sessions.length
+    studyData.sessions.forEach((session) => {
+      if (session && typeof session === "object") {
+        totalTime += session.time || 0
+        if (session.subject) {
+          subjects.add(session.subject)
+        }
+      }
+    })
+  }
+  // Update UI with accurate values
+  totalStudyTimeElement.textContent = totalTime
+  totalSessionsElement.textContent = totalSessions
+  subjectsStudiedElement.textContent = subjects.size
+}
+
+// Function to update the level module - Improved synchronization with dashboard
+function updateLevelModule(studyData) {
+  if (
+    !levelBadgeElement ||
+    !levelNameElement ||
+    !levelProgressCircleElement ||
+    !levelProgressTextElement ||
+    !levelPerksListElement
+  )
+    return
+
+  const level = studyData.level || 1
+  const xp = studyData.xp || 0
+
+  // Update level badge
+  levelBadgeElement.textContent = level
+
+  // Try to access the global level system
+  let levelSystem
+
+  try {
+    // First try to get the level system from the window object
+    levelSystem = window.levelSystem
+
+    // If not available, create a basic level system
+    if (!levelSystem) {
+      levelSystem = {
+        calculateLevel: (xp) => Math.floor(Math.sqrt(xp / 50)) + 1,
+        progressToNextLevel: function (xp) {
+          const currentLevel = this.calculateLevel(xp)
+          const currentLevelXP = 50 * Math.pow(currentLevel - 1, 2)
+          const nextLevelXP = 50 * Math.pow(currentLevel, 2)
+          const xpForCurrentLevel = xp - currentLevelXP
+          const xpRequiredForNextLevel = nextLevelXP - currentLevelXP
+          return Math.min(100, Math.floor((xpForCurrentLevel / xpRequiredForNextLevel) * 100))
+        },
+        xpForNextLevel: function (xp) {
+          const currentLevel = this.calculateLevel(xp)
+          return 50 * Math.pow(currentLevel, 2)
+        },
+        getUnlockedPerks: function (level) {
+          const perks = []
+          for (const perkLevel in this.levelPerks) {
+            if (Number.parseInt(perkLevel) <= level) {
+              perks.push({
+                level: Number.parseInt(perkLevel),
+                name: this.levelPerks[perkLevel].name,
+                description: this.levelPerks[perkLevel].description,
+              })
+            }
+          }
+          return perks
+        },
+        levelPerks: {
+          1: { name: "Beginner", description: "You've started your learning journey!" },
+          5: { name: "Dedicated Learner", description: "Unlock streak freezes and avatar customization" },
+          10: { name: "Scholar", description: "Unlock advanced themes and sound packs" },
+          15: { name: "Academic", description: "Unlock special profile effects and badges" },
+          20: { name: "Professor", description: "Unlock legendary profile frames and auras" },
+        },
+      }
+    }
+  } catch (error) {
+    console.error("Error accessing level system:", error)
+    // Fallback to basic level system
+    levelSystem = {
+      calculateLevel: (xp) => Math.floor(Math.sqrt(xp / 50)) + 1,
+      progressToNextLevel: (xp) => 0,
+      xpForNextLevel: (xp) => 100,
+      getUnlockedPerks: () => [],
+      levelPerks: {},
+    }
+  }
+
+  // Find the highest level perk unlocked for the level name
+  const unlockedPerks = levelSystem.getUnlockedPerks ? levelSystem.getUnlockedPerks(level) : []
+
+  // Find the highest level perk unlocked
+  let highestPerk = { level: 1, name: "Beginner", description: "You've started your learning journey!" }
+  for (const perk of unlockedPerks) {
+    if (perk.level > highestPerk.level) {
+      highestPerk = perk
+    }
+  }
+
+  // Update level name
+  levelNameElement.textContent = highestPerk.name
+
+  // Update progress circle
+  const progress = levelSystem.progressToNextLevel ? levelSystem.progressToNextLevel(xp) : 0
+  levelProgressCircleElement.style.setProperty("--progress", `${progress}%`)
+
+  // Calculate XP needed for next level
+  const nextLevelXP = levelSystem.xpForNextLevel ? levelSystem.xpForNextLevel(xp) : null
+  if (nextLevelXP !== null) {
+    const xpNeeded = nextLevelXP - xp
+    levelProgressTextElement.textContent = `${xp}/${nextLevelXP} XP (${xpNeeded} to Level ${level + 1})`
+  } else {
+    levelProgressTextElement.textContent = "Max Level Reached!"
+  }
+
+  // Update perks list
+  levelPerksListElement.innerHTML = ""
+
+  // Sort perks by level
+  const sortedPerks = [...unlockedPerks].sort((a, b) => b.level - a.level)
+
+  // Show only the 3 highest level perks to avoid clutter
+  const displayPerks = sortedPerks.slice(0, 3)
+
+  displayPerks.forEach((perk) => {
+    const perkItem = document.createElement("div")
+    perkItem.className = "level-perk-item"
+    perkItem.innerHTML = `
+      <div class="level-perk-header">
+        <div class="level-perk-level">Level ${perk.level}:</div>
+        <div class="level-perk-name">${perk.name}</div>
+      </div>
+      <div class="level-perk-description">${perk.description}</div>
+    `
+    levelPerksListElement.appendChild(perkItem)
+  })
+
+  // If there are more perks, add a "more" indicator
+  if (unlockedPerks.length > 3) {
+    const moreItem = document.createElement("div")
+    moreItem.className = "level-perk-more"
+    moreItem.textContent = `+ ${unlockedPerks.length - 3} more perks unlocked`
+    levelPerksListElement.appendChild(moreItem)
+  }
+}
+
+// Function to buy a streak freeze
+function buyStreakFreeze() {
+  const studyData = JSON.parse(localStorage.getItem("studyTrackerData") || "{}")
+  const xp = studyData.xp || 0
+
+  // Check if user has max streak freezes
+  if (profileData.streakFreezes >= profileData.maxStreakFreezes) {
+    showNotification("Maximum Reached", "You already have the maximum number of streak freezes.")
+    return
+  }
+
+  // Check if user has enough XP
+  if (xp < profileData.streakFreezePrice) {
+    showNotification("Not Enough XP", `You need ${profileData.streakFreezePrice} XP to buy a streak freeze.`)
+    return
+  }
+
+  // Deduct XP
+  studyData.xp -= profileData.streakFreezePrice
+
+  // Add streak freeze
+  profileData.streakFreezes++
+
+  // Save data
+  localStorage.setItem("studyTrackerData", JSON.stringify(studyData))
+  saveData()
+
+  // Update UI
+  updateStreakFreezeCount()
+  updateProfileUI(studyData)
+
+  showNotification("Streak Freeze Purchased", "You've purchased a streak freeze!")
+}
+
+// Function to use a streak freeze
+function useStreakFreeze(date) {
+  // Check if user has streak freezes
+  if (profileData.streakFreezes <= 0) {
+    return false
+  }
+
+  // Use a streak freeze
+  profileData.streakFreezes--
+
+  // Record the usage
+  profileData.streakFreezeHistory.push({
+    date: date.toISOString(),
+    used: new Date().toISOString(),
+  })
+
+  // Save data
+  saveData()
+
+  // Update UI
+  updateStreakFreezeCount()
+
+  return true
+}
+
+// Function to check if a streak freeze should be applied automatically
+function checkAndApplyStreakFreeze() {
+  const studyData = JSON.parse(localStorage.getItem("studyTrackerData") || "{}")
+
+  // Check if we need to apply a streak freeze
+  if (!studyData.lastStudyDate) return
+
+  const today = new Date()
+  const lastStudyDate = new Date(studyData.lastStudyDate)
+
+  // Check if the last study date was yesterday
+  const yesterday = new Date(today)
+  yesterday.setDate(yesterday.getDate() - 1)
+
+  // If last study date was before yesterday and we have streak freezes
+  if (lastStudyDate < yesterday && profileData.streakFreezes > 0) {
+    // Use a streak freeze for yesterday
+    const freezeDate = new Date(yesterday)
+    if (useStreakFreeze(freezeDate)) {
+      // Update the last study date to yesterday to maintain the streak
+      studyData.lastStudyDate = yesterday.toLocaleDateString()
+      localStorage.setItem("studyTrackerData", JSON.stringify(studyData))
+
+      showNotification("Streak Freeze Applied", "A streak freeze was used to maintain your streak!")
+    }
+  }
+}
+
 // Event Listeners
 editNameBtn.addEventListener("click", () => {
   displayNameInput.value = profileData.name
@@ -824,6 +1418,11 @@ closeModalBtn.addEventListener("click", () => {
 window.addEventListener("click", (e) => {
   if (e.target === editNameModal) {
     editNameModal.style.display = "none"
+  }
+
+  if (e.target === streakFreezeModal) {
+    streakFreezeModal.style.display = "none"
+    streakFreezeModal.classList.remove("show")
   }
 })
 
@@ -839,82 +1438,36 @@ editNameForm.addEventListener("submit", (e) => {
 
 themeToggle.addEventListener("click", toggleDarkMode)
 
-// Load theme if saved
-const savedThemeId = localStorage.getItem("themeId")
-if (savedThemeId) {
-  const storeData = JSON.parse(localStorage.getItem("storeData") || '{"inventory":[]}')
-  const theme = storeData.inventory.find((item) => item.id === savedThemeId)
-  if (theme) {
-    applyThemeToUI(savedThemeId)
-  }
-}
+// Streak freeze modal event listeners
+buyStreakFreezeBtn.addEventListener("click", () => {
+  streakFreezeModal.style.display = "flex"
+  setTimeout(() => {
+    streakFreezeModal.classList.add("show")
+  }, 10)
+})
 
-// Apply theme to UI
-function applyThemeToUI(themeId) {
-  // Remove existing theme classes
-  document.body.classList.remove(
-    "theme-dark-forest", 
-    "theme-ocean-blue", 
-    "theme-sunset", 
-    "theme-purple-haze", 
-    "theme-mint-fresh", 
-    "theme-dark-mode-pro", 
-    "theme-coral-reef", 
-    "theme-cherry-blossom", 
-    "theme-cyber-punk"
-  )
+streakFreezeModalCloseBtn.addEventListener("click", () => {
+  streakFreezeModal.classList.remove("show")
+  setTimeout(() => {
+    streakFreezeModal.style.display = "none"
+  }, 300)
+})
 
-  // Add new theme class
-  if (themeId === "theme_dark_forest") {
-    document.body.classList.add("theme-dark-forest")
-    document.documentElement.style.setProperty("--primary-color", "#2ecc71")
-    document.documentElement.style.setProperty("--primary-dark", "#27ae60")
-    document.documentElement.style.setProperty("--primary-light", "#a3e4c1")
-  } else if (themeId === "theme_ocean_blue") {
-    document.body.classList.add("theme-ocean-blue")
-    document.documentElement.style.setProperty("--primary-color", "#3498db")
-    document.documentElement.style.setProperty("--primary-dark", "#2980b9")
-    document.documentElement.style.setProperty("--primary-light", "#a9cce3")
-  } else if (themeId === "theme_sunset") {
-    document.body.classList.add("theme-sunset")
-    document.documentElement.style.setProperty("--primary-color", "#e67e22")
-    document.documentElement.style.setProperty("--primary-dark", "#d35400")
-    document.documentElement.style.setProperty("--primary-light", "#f5cba7")
-  } else if (themeId === "theme_purple_haze") {
-    document.body.classList.add("theme-purple-haze")
-    document.documentElement.style.setProperty("--primary-color", "#9b59b6")
-    document.documentElement.style.setProperty("--primary-dark", "#8e44ad")
-    document.documentElement.style.setProperty("--primary-light", "#d7bde2")
-  } else if (themeId === "theme_mint_fresh") {
-    document.body.classList.add("theme-mint-fresh")
-    document.documentElement.style.setProperty("--primary-color", "#1abc9c")
-    document.documentElement.style.setProperty("--primary-dark", "#16a085")
-    document.documentElement.style.setProperty("--primary-light", "#a3e4d7")
-  } else if (themeId === "theme_dark_mode_pro") {
-    document.body.classList.add("theme-dark-mode-pro")
-    document.documentElement.style.setProperty("--primary-color", "#6c5ce7")
-    document.documentElement.style.setProperty("--primary-dark", "#5641e5")
-    document.documentElement.style.setProperty("--primary-light", "#a29bfe")
-  } else if (themeId === "theme_coral_reef") {
-    document.body.classList.add("theme-coral-reef")
-    document.documentElement.style.setProperty("--primary-color", "#ff7675")
-    document.documentElement.style.setProperty("--primary-dark", "#e84393")
-    document.documentElement.style.setProperty("--primary-light", "#fab1a0")
-  } else if (themeId === "theme_cherry_blossom") {
-    document.body.classList.add("theme-cherry-blossom")
-    document.documentElement.style.setProperty("--primary-color", "#fd79a8")
-    document.documentElement.style.setProperty("--primary-dark", "#e84393")
-    document.documentElement.style.setProperty("--primary-light", "#ffeaa7")
-  } else if (themeId === "theme_cyber_punk") {
-    document.body.classList.add("theme-cyber-punk")
-    document.documentElement.style.setProperty("--primary-color", "#00f5d4")
-    document.documentElement.style.setProperty("--primary-dark", "#00b8a9")
-    document.documentElement.style.setProperty("--primary-light", "#f706cf")
-  }
+streakFreezeCancelBtn.addEventListener("click", () => {
+  streakFreezeModal.classList.remove("show")
+  setTimeout(() => {
+    streakFreezeModal.style.display = "none"
+  }, 300)
+})
 
-  // Save theme preference
-  localStorage.setItem("themeId", themeId)
-}
+streakFreezePurchaseBtn.addEventListener("click", () => {
+  buyStreakFreeze()
+  streakFreezeModal.classList.remove("show")
+  setTimeout(() => {
+    streakFreezeModal.style.display = "none"
+  }, 300)
+})
+
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
   // Load dark mode preference
@@ -924,5 +1477,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load data
   loadData()
+
+  // Check if we need to apply a streak freeze
+  checkAndApplyStreakFreeze()
 })
 
+function updateStreakFreezeCount() {
+  if (!streakFreezeCountElement) return
+
+  streakFreezeCountElement.textContent = profileData.streakFreezes
+}

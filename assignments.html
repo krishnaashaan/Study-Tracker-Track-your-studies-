@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment Tracker - Study Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assignments.css">
+    <link rel="stylesheet" href="notification.css">
+    <link rel="stylesheet" href="theme-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body class="light-mode">
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Assignment Tracker <i class="fa-solid fa-clipboard-list"></i></h1>
+                <div class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="achievements.html"><i class="fas fa-trophy"></i> Achievements</a></li>
+                <li><a href="statistics.html"><i class="fas fa-chart-line"></i> Stats</a></li>
+                <li class="active"><a href="assignments.html"><i class="fas fa-tasks"></i> Assignments</a></li>
+                <li><a href="pomodoro.html"><i class="fas fa-clock"></i> Pomodoro</a></li>
+                <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="galaxy.html"><i class="fas fa-star"></i> Galaxy</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section class="page-header">
+                <h2>Your Assignments</h2>
+                <p>Track, manage, and complete your academic tasks</p>
+            </section>
+
+            <section class="stats-overview">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
+                    <div class="stat-content">
+                        <h3>Total</h3>
+                        <p id="total-assignments">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-content">
+                        <h3>Completed</h3>
+                        <p id="completed-assignments">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-hourglass-half"></i></div>
+                    <div class="stat-content">
+                        <h3>Due Soon</h3>
+                        <p id="due-soon-assignments">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-exclamation-circle"></i></div>
+                    <div class="stat-content">
+                        <h3>Overdue</h3>
+                        <p id="overdue-assignments">0</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="assignment-controls">
+                <div class="control-group">
+                    <div class="view-controls">
+                        <button id="list-view-btn" class="view-btn active" data-view="list">
+                            <i class="fas fa-list"></i> List
+                        </button>
+                        <button id="calendar-view-btn" class="view-btn" data-view="calendar">
+                            <i class="fas fa-calendar-alt"></i> Calendar
+                        </button>
+                        <button id="timeline-view-btn" class="view-btn" data-view="timeline">
+                            <i class="fas fa-project-diagram"></i> Timeline
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <div class="filter-controls">
+                        <select id="status-filter">
+                            <option value="all">All Statuses</option>
+                            <option value="to-do">To Do</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="overdue">Overdue</option>
+                        </select>
+                        <select id="subject-filter">
+                            <option value="all">All Subjects</option>
+                            <!-- Subjects will be added dynamically -->
+                        </select>
+                        <select id="sort-by">
+                            <option value="due-date">Sort by Due Date</option>
+                            <option value="priority">Sort by Priority</option>
+                            <option value="subject">Sort by Subject</option>
+                            <option value="status">Sort by Status</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <button id="add-assignment-btn" class="btn primary">
+                        <i class="fas fa-plus"></i> Add Assignment
+                    </button>
+                </div>
+            </section>
+
+            <!-- List View -->
+            <section id="list-view" class="assignment-view active">
+                <div id="assignments-list" class="assignments-list">
+                    <!-- Assignments will be added here dynamically -->
+                    <p class="empty-message">No assignments found. Add your first assignment to get started!</p>
+                </div>
+            </section>
+
+            <!-- Calendar View -->
+            <section id="calendar-view" class="assignment-view">
+                <div class="calendar-controls">
+                    <button id="prev-month" class="btn icon-btn"><i class="fas fa-chevron-left"></i></button>
+                    <h3 id="calendar-month">Month Year</h3>
+                    <button id="next-month" class="btn icon-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="calendar-wrapper">
+                    <div class="calendar-header">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+                    <div id="calendar-grid" class="calendar-grid">
+                        <!-- Calendar days will be added here dynamically -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Timeline View -->
+            <section id="timeline-view" class="assignment-view">
+                <div class="timeline-controls">
+                    <button id="prev-week" class="btn icon-btn"><i class="fas fa-chevron-left"></i></button>
+                    <h3 id="timeline-range">Date Range</h3>
+                    <button id="next-week" class="btn icon-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="timeline-wrapper">
+                    <div class="timeline-header" id="timeline-header">
+                        <!-- Timeline dates will be added here dynamically -->
+                    </div>
+                    <div class="timeline-grid" id="timeline-grid">
+                        <!-- Timeline assignments will be added here dynamically -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Assignment Modal -->
+    <div id="assignment-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Add Assignment</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="assignment-form">
+                <input type="hidden" id="assignment-id">
+                <div class="form-group">
+                    <label for="assignment-title">Title</label>
+                    <input type="text" id="assignment-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="assignment-subject">Subject</label>
+                    <input type="text" id="assignment-subject" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="assignment-due-date">Due Date</label>
+                        <input type="text" id="assignment-due-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="assignment-priority">Priority</label>
+                        <select id="assignment-priority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="assignment-status">Status</label>
+                    <select id="assignment-status">
+                        <option value="to-do">To Do</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assignment-description">Description</label>
+                    <textarea id="assignment-description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Checklist</label>
+                    <div id="checklist-container">
+                        <!-- Checklist items will be added here dynamically -->
+                    </div>
+                    <button type="button" id="add-checklist-item" class="btn secondary">
+                        <i class="fas fa-plus"></i> Add Item
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label>Reminders</label>
+                    <div class="reminder-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="reminder-day-before"> 1 day before
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="reminder-hour-before"> 1 hour before
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="reminder-custom"> Custom
+                        </label>
+                    </div>
+                    <div id="custom-reminder-container" class="hidden">
+                        <input type="text" id="custom-reminder-time" placeholder="Custom reminder time">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="assignment-tags">Tags (comma separated)</label>
+                    <input type="text" id="assignment-tags" placeholder="e.g., group project, final, research">
+                </div>
+                <div class="form-group">
+                    <label for="assignment-color">Color</label>
+                    <input type="color" id="assignment-color" value="#4caf50">
+                </div>
+                <div class="form-group">
+                    <label for="assignment-attachments">Attachments</label>
+                    <div id="attachments-container">
+                        <!-- Attachments will be added here dynamically -->
+                    </div>
+                    <div class="attachment-controls">
+                        <button type="button" id="add-file-attachment" class="btn secondary">
+                            <i class="fas fa-file"></i> Add File
+                        </button>
+                        <button type="button" id="add-link-attachment" class="btn secondary">
+                            <i class="fas fa-link"></i> Add Link
+                        </button>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancel-assignment" class="btn secondary">Cancel</button>
+                    <button type="submit" class="btn primary">Save Assignment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Assignment Details Modal -->
+    <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="details-title">Assignment Details</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="assignment-details">
+                <div class="details-header">
+                    <div class="details-status" id="details-status">To Do</div>
+                    <div class="details-due-date" id="details-due-date">Due: Jan 1, 2025</div>
+                </div>
+                <div class="details-subject" id="details-subject">Subject</div>
+                <div class="details-priority" id="details-priority">Priority: Medium</div>
+                <div class="details-description" id="details-description">Description text here...</div>
+                
+                <div class="details-section">
+                    <h3>Checklist</h3>
+                    <div class="details-checklist" id="details-checklist">
+                        <!-- Checklist items will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="details-section">
+                    <h3>Study Time</h3>
+                    <div class="details-study-time" id="details-study-time">
+                        Total time spent: 0 minutes
+                    </div>
+                    <div class="details-study-sessions" id="details-study-sessions">
+                        <!-- Study sessions will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="details-section">
+                    <h3>Attachments</h3>
+                    <div class="details-attachments" id="details-attachments">
+                        <!-- Attachments will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="details-section">
+                    <h3>Tags</h3>
+                    <div class="details-tags" id="details-tags">
+                        <!-- Tags will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="details-actions">
+                    <button id="edit-assignment" class="btn secondary">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button id="delete-assignment" class="btn danger">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link Study Session Modal -->
+    <div id="link-session-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Link Study Session</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="link-session-form">
+                <div class="form-group">
+                    <label for="session-assignment">Assignment</label>
+                    <select id="session-assignment" required>
+                        <!-- Assignments will be added here dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="session-subject">Subject</label>
+                    <input type="text" id="session-subject" required>
+                </div>
+                <div class="form-group">
+                    <label for="session-time">Time (minutes)</label>
+                    <input type="number" id="session-time" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="session-notes">Notes</label>
+                    <textarea id="session-notes" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancel-link-session" class="btn secondary">Cancel</button>
+                    <button type="submit" class="btn primary">Save Session</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- File Attachment Modal -->
+    <div id="file-attachment-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add File Attachment</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="file-attachment-form">
+                <div class="form-group">
+                    <label for="attachment-name">Name</label>
+                    <input type="text" id="attachment-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="attachment-file">File</label>
+                    <input type="file" id="attachment-file" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancel-file-attachment" class="btn secondary">Cancel</button>
+                    <button type="submit" class="btn primary">Add File</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Link Attachment Modal -->
+    <div id="link-attachment-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Link Attachment</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="link-attachment-form">
+                <div class="form-group">
+                    <label for="link-name">Name</label>
+                    <input type="text" id="link-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="link-url">URL</label>
+                    <input type="url" id="link-url" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancel-link-attachment" class="btn secondary">Cancel</button>
+                    <button type="submit" class="btn primary">Add Link</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Flatpickr for date picking -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="assignments.js"></script>
+    <script src="theme-manager.js"></script>
+    <script src="update-nav.js"></script>
+</body>
+</html>

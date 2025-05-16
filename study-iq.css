@@ -1,0 +1,631 @@
+/* Study IQ Score styles */
+.study-iq-stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.mini-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: var(--border-color-light);
+}
+
+body.dark-mode .mini-progress {
+  background-color: var(--border-color-dark);
+}
+
+.mini-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  width: 0;
+  transition: width 0.5s ease;
+}
+
+.study-iq-container {
+  background-color: var(--card-bg-light);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow-light);
+  margin-bottom: 20px;
+  transition: var(--transition);
+}
+
+body.dark-mode .study-iq-container {
+  background-color: var(--card-bg-dark);
+  box-shadow: var(--shadow-dark);
+}
+
+.study-iq-score-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.study-iq-score-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.study-iq-score {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(var(--primary-color) 0%, var(--accent-color) 100%);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  color: white;
+  position: relative;
+  transition: background 0.5s ease;
+}
+
+.study-iq-score::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  background-color: var(--card-bg-light);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+body.dark-mode .study-iq-score::before {
+  background-color: var(--card-bg-dark);
+}
+
+.score-value {
+  font-size: 3rem;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
+  color: var(--text-color-light);
+}
+
+body.dark-mode .score-value {
+  color: var(--text-color-dark);
+}
+
+.score-label {
+  font-size: 0.9rem;
+  position: relative;
+  z-index: 1;
+  color: var(--text-color-light);
+  opacity: 0.8;
+}
+
+body.dark-mode .score-label {
+  color: var(--text-color-dark);
+}
+
+.study-iq-feedback {
+  text-align: center;
+  font-weight: 500;
+  color: var(--primary-color);
+  max-width: 250px;
+}
+
+.study-iq-components {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex: 2;
+  min-width: 300px;
+}
+
+.iq-component {
+  background-color: var(--bg-color-light);
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: var(--shadow-light);
+  transition: var(--transition);
+}
+
+body.dark-mode .iq-component {
+  background-color: var(--bg-color-dark);
+  box-shadow: var(--shadow-dark);
+}
+
+.component-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.component-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgba(76, 175, 80, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+}
+
+.component-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.component-score {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.component-description {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+
+.component-progress {
+  height: 8px;
+  background-color: var(--border-color-light);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+body.dark-mode .component-progress {
+  background-color: var(--border-color-dark);
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--primary-color);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.study-iq-details {
+  margin-top: 30px;
+}
+
+.study-iq-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.study-iq-card {
+  background-color: var(--card-bg-light);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow-light);
+  transition: var(--transition);
+}
+
+body.dark-mode .study-iq-card {
+  background-color: var(--card-bg-dark);
+  box-shadow: var(--shadow-dark);
+}
+
+.study-iq-card h3 {
+  margin-bottom: 15px;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subject-distribution-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.distribution-rating {
+  text-align: center;
+  font-weight: 500;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.distribution-balanced {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: var(--success-color);
+}
+
+.distribution-skewed {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: var(--warning-color);
+}
+
+.distribution-focused {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: var(--danger-color);
+}
+
+.subject-iq-description {
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.subject-iq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.subject-iq-card {
+  background-color: var(--bg-color-light);
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: var(--shadow-light);
+  transition: var(--transition);
+}
+
+body.dark-mode .subject-iq-card {
+  background-color: var(--bg-color-dark);
+  box-shadow: var(--shadow-dark);
+}
+
+.subject-iq-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.subject-iq-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.subject-iq-value {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.subject-iq-progress {
+  height: 6px;
+  background-color: var(--border-color-light);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+body.dark-mode .subject-iq-progress {
+  background-color: var(--border-color-dark);
+}
+
+.subject-iq-progress-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.subject-iq-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* Add these styles for the retention strength section */
+.retention-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.timeframe-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.timeframe-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.timeframe-btn {
+  padding: 5px 10px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-color-light);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.timeframe-btn:hover {
+  background-color: var(--primary-color-light);
+}
+
+.timeframe-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.retention-info {
+  position: relative;
+  cursor: help;
+}
+
+.retention-info .tooltip {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 250px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 100;
+}
+
+.retention-info:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.retention-item {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background-color: var(--bg-color);
+  transition: all 0.2s ease;
+}
+
+.retention-item:hover {
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.retention-subject {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.retention-subject .subject-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.retention-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  font-size: 0.85rem;
+  color: white;
+}
+
+.retention-metrics {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.retention-strength {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 70px;
+}
+
+.strength-value {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.strength-label {
+  font-size: 0.8rem;
+  color: var(--text-color-secondary);
+}
+
+.retention-progress {
+  flex: 1;
+  height: 12px;
+  background-color: var(--bg-color-light);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.retention-bar {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+.retention-bar.weak {
+  background-color: #f44336;
+}
+
+.retention-bar.moderate {
+  background-color: #ff9800;
+}
+
+.retention-bar.strong {
+  background-color: #4caf50;
+}
+
+.retention-factors {
+  display: flex;
+  gap: 10px;
+}
+
+.factor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.factor i {
+  margin-bottom: 5px;
+  color: var(--text-color-secondary);
+}
+
+.factor-bar {
+  height: 4px;
+  background-color: var(--primary-color);
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.retention-legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+}
+
+.legend-color {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+}
+
+.legend-color.weak {
+  background-color: #f44336;
+}
+
+.legend-color.moderate {
+  background-color: #ff9800;
+}
+
+.legend-color.strong {
+  background-color: #4caf50;
+}
+
+/* Add these styles for the forgetting prediction */
+.forgetting-prediction {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: var(--text-color-secondary);
+  padding: 5px 10px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
+}
+
+body.dark-mode .forgetting-prediction {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.forgetting-prediction i {
+  color: var(--primary-color);
+}
+
+.review-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.review-count::before {
+  content: "•";
+  margin-right: 4px;
+}
+
+/* Dark mode adjustments */
+.dark-mode .timeframe-btn {
+  background-color: var(--dark-bg-color-light);
+  color: white;
+}
+
+.dark-mode .timeframe-btn:hover {
+  background-color: rgba(0, 252, 25, 0.584);
+}
+
+.dark-mode .timeframe-btn.active {
+  background-color: green;
+}
+
+.dark-mode .retention-item {
+  background-color: var(--dark-bg-color);
+}
+
+.dark-mode .retention-progress {
+  background-color: var(--dark-bg-color-light);
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .forgetting-prediction {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .retention-controls {
+    flex-direction: column;
+    align-items: flex-start; 
+    gap: 10px;
+  }
+
+  .retention-metrics {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .retention-progress {
+    width: 100%;
+  }
+
+  .retention-factors {
+    flex-wrap: wrap;
+  }
+
+  .factor {
+    min-width: 40%;
+  }
+
+  .study-iq-score-wrapper {
+    width: 100%;
+  }
+
+  .study-iq-components {
+    width: 100%;
+  }
+
+  .study-iq-row {
+    grid-template-columns: 1fr;
+  }
+
+  .subject-iq-grid {
+    grid-template-columns: 1fr;
+  }
+}

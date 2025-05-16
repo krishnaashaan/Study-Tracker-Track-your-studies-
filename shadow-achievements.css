@@ -1,0 +1,301 @@
+/* Shadow Achievements Styles */
+
+/* Tab styles */
+.tabs-container {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tab-button {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+  color: var(--primary-color);
+}
+
+.tab-button.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Shadow achievements list */
+.shadow-achievements-header {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.shadow-achievements-header h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.shadow-achievements-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* Shadow achievement items */
+.shadow-achievement {
+  position: relative;
+  overflow: hidden;
+}
+
+.shadow-achievement::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.shadow-achievement-hint {
+  background-color: rgba(var(--card-bg-rgb), 0.7);
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 15px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.shadow-achievement-hint:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-achievement-hint.visible {
+  background-color: rgba(var(--primary-rgb), 0.05);
+  border: 1px solid rgba(var(--primary-rgb), 0.2);
+}
+
+.shadow-achievement-hint.visible .achievement-icon {
+  background-color: rgba(var(--primary-rgb), 0.3);
+}
+
+.shadow-achievement-hint.visible .achievement-title {
+  color: var(--primary-color);
+}
+
+.shadow-achievement-hint .achievement-icon {
+  background-color: rgba(var(--primary-rgb), 0.2);
+  color: var(--primary-color);
+}
+
+.achievement-hint {
+  font-style: italic;
+  margin: 10px 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Notification styles */
+.shadow-achievement-notification,
+.shadow-hint-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 350px;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  display: flex;
+  align-items: flex-start;
+  z-index: 1000;
+  transform: translateX(400px);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-left: 5px solid var(--primary-color);
+}
+
+.shadow-achievement-notification.show,
+.shadow-hint-notification.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.shadow-achievement-notification {
+  border-left: 5px solid #9c27b0;
+}
+
+.shadow-hint-notification {
+  border-left: 5px solid #ffc107;
+}
+
+.notification-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-right: 15px;
+  flex-shrink: 0;
+  background-color: rgba(156, 39, 176, 0.2);
+  color: #9c27b0;
+}
+
+.shadow-achievement-notification .notification-icon {
+  background-color: rgba(156, 39, 176, 0.2);
+  color: #9c27b0;
+}
+
+.shadow-hint-notification .notification-icon {
+  background-color: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+}
+
+.notification-content {
+  flex-grow: 1;
+}
+
+.notification-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+}
+
+.notification-achievement {
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: var(--primary-color);
+}
+
+.notification-description {
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+.notification-reward {
+  font-weight: bold;
+  color: #4caf50;
+}
+
+.notification-hint {
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* Fireworks animation */
+.fireworks-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.firework {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  animation: firework 1s ease-out forwards;
+}
+
+@keyframes firework {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+    box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+    box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+  }
+}
+
+/* Enhanced firework particles */
+.firework-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  animation: particle 0.8s ease-out forwards;
+}
+
+@keyframes particle {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty));
+    opacity: 0;
+  }
+}
+
+/* Dark mode adjustments */
+.dark-mode .shadow-achievement-hint {
+  background-color: rgba(30, 30, 30, 0.7);
+  border-color: #444;
+}
+
+.dark-mode .shadow-achievement-notification,
+.dark-mode .shadow-hint-notification {
+  background-color: #2d2d2d;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .shadow-achievements-list {
+    grid-template-columns: 1fr;
+  }
+
+  .shadow-achievement-notification,
+  .shadow-hint-notification {
+    width: calc(100% - 40px);
+    top: 10px;
+    right: 10px;
+  }
+}
+
+/* Pulsing effect for visible shadow achievements */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(var(--primary-rgb), 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0);
+  }
+}
+
+.shadow-achievement-hint.visible {
+  animation: pulse 2s infinite;
+}

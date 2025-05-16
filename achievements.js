@@ -46,7 +46,6 @@ function ensureAllAchievementsInitialized(data) {
     // Check if the achievement should be unlocked based on its condition
     if (!data.achievements[achievement.id].unlocked && achievement.condition(data)) {
       data.achievements[achievement.id].unlocked = true
-      // Don't add XP here to avoid duplicating XP
     }
 
     // Update progress
@@ -73,6 +72,7 @@ const allAchievements = [
     progress: (data) => Math.min(data.sessions.length > 0 || Object.keys(data.dailyTotals).length > 0 ? 1 : 0, 1),
     target: 1,
     xp: 10,
+    rarity: "🟢 Common",
   },
   {
     id: "study_30_min",
@@ -91,6 +91,7 @@ const allAchievements = [
     },
     target: 30,
     xp: 20,
+    rarity: "🟢 Common",
   },
   {
     id: "study_60_min",
@@ -109,6 +110,7 @@ const allAchievements = [
     },
     target: 60,
     xp: 30,
+    rarity: "🟢 Common",
   },
   {
     id: "study_120_min",
@@ -127,6 +129,7 @@ const allAchievements = [
     },
     target: 120,
     xp: 50,
+    rarity: "🟢 Common",
   },
   {
     id: "streak_3",
@@ -137,6 +140,7 @@ const allAchievements = [
     progress: (data) => Math.min(data.streak, 3),
     target: 3,
     xp: 30,
+    rarity: "🟢 Common",
   },
   {
     id: "streak_7",
@@ -147,6 +151,7 @@ const allAchievements = [
     progress: (data) => Math.min(data.streak, 7),
     target: 7,
     xp: 70,
+    rarity: "🔵 Uncommon",
   },
   {
     id: "streak_30",
@@ -157,6 +162,7 @@ const allAchievements = [
     progress: (data) => Math.min(data.streak, 30),
     target: 30,
     xp: 300,
+    rarity: "🔵 Uncommon",
   },
   {
     id: "total_study_1h",
@@ -177,12 +183,13 @@ const allAchievements = [
     },
     target: 60,
     xp: 20,
+    rarity: "🟢 Common",
   },
   {
     id: "total_study_5h",
     title: "Scholar Intermediate",
     description: "Study for a total of 5 hours",
-    icon: "fa-solid fa-scroll",
+    icon: "fa-solid fa-book-open",
     condition: (data) => {
       const totalMinutes =
         Object.values(data.dailyTotals).reduce((sum, val) => sum + val, 0) +
@@ -197,12 +204,13 @@ const allAchievements = [
     },
     target: 300,
     xp: 50,
+    rarity: "🔵 Uncommon",
   },
   {
     id: "total_study_10h",
     title: "Scholar Advanced",
     description: "Study for a total of 10 hours",
-    icon: "fa-solid fa-book-open",
+    icon: "fa-solid fa-book-open-reader",
     condition: (data) => {
       const totalMinutes =
         Object.values(data.dailyTotals).reduce((sum, val) => sum + val, 0) +
@@ -217,6 +225,7 @@ const allAchievements = [
     },
     target: 600,
     xp: 100,
+    rarity: "🔵 Uncommon",
   },
   {
     id: "total_study_24h",
@@ -237,6 +246,7 @@ const allAchievements = [
     },
     target: 1440,
     xp: 240,
+    rarity: "🟡 Rare",
   },
   {
     id: "subjects_3",
@@ -265,12 +275,13 @@ const allAchievements = [
     },
     target: 3,
     xp: 30,
+    rarity: "🟢 Common",
   },
   {
     id: "subjects_5",
     title: "Diverse Learner Intermediate",
-    description: "polymath",
-    icon: "fa-solid fa-brain",
+    description: "Study 5 different subjects",
+    icon: "fa-solid fa-book-atlas",
     condition: (data) => {
       const subjects = new Set()
       data.sessions.forEach((session) => subjects.add(session.subject))
@@ -293,6 +304,7 @@ const allAchievements = [
     },
     target: 5,
     xp: 50,
+    rarity: "🔵 Uncommon",
   },
   {
     id: "xp_100",
@@ -303,16 +315,18 @@ const allAchievements = [
     progress: (data) => Math.min(data.xp, 100),
     target: 100,
     xp: 20,
+    rarity: "🟢 Common",
   },
   {
     id: "xp_500",
     title: "XP Collector Intermediate",
     description: "Earn 500 XP",
-    icon: "fa-solid fa-medal",
+    icon: "fa-solid fa-certificate",
     condition: (data) => data.xp >= 500,
     progress: (data) => Math.min(data.xp, 500),
     target: 500,
     xp: 50,
+    rarity: "🔵 Uncommon",
   },
   {
     id: "xp_1000",
@@ -323,6 +337,7 @@ const allAchievements = [
     progress: (data) => Math.min(data.xp, 1000),
     target: 1000,
     xp: 100,
+    rarity: "🟡 Rare",
   },
   {
     id: "xp_5000",
@@ -333,6 +348,7 @@ const allAchievements = [
     progress: (data) => Math.min(data.xp, 5000),
     target: 5000,
     xp: 500,
+    rarity: "🟡 Rare",
   },
   {
     id: "complete_first_goal",
@@ -347,6 +363,7 @@ const allAchievements = [
     },
     target: 1,
     xp: 20,
+    rarity: "🟢 Common",
   },
   {
     id: "complete_10_goals",
@@ -361,6 +378,7 @@ const allAchievements = [
     },
     target: 10,
     xp: 50,
+    rarity: "🟢 Common",
   },
   {
     id: "complete_50_goals",
@@ -375,6 +393,7 @@ const allAchievements = [
     },
     target: 50,
     xp: 150,
+    rarity: "🔵 Uncommon",
   },
   {
     id: "complete_100_goals",
@@ -389,15 +408,14 @@ const allAchievements = [
     },
     target: 100,
     xp: 300,
+    rarity: "🟡 Rare",
   },
-
   {
     id: "goal_streak_3",
     title: "Goal Streak Beginner",
     description: "Complete at least one daily goal for 3 consecutive days",
     icon: "fa-solid fa-fire",
     condition: (data) => {
-  
       return data.streak >= 3 && data.completedGoals && data.completedGoals.length >= 3
     },
     progress: (data) => {
@@ -406,6 +424,7 @@ const allAchievements = [
     },
     target: 3,
     xp: 40,
+    rarity: "🟢 Common",
   },
   {
     id: "goal_streak_7",
@@ -413,7 +432,6 @@ const allAchievements = [
     description: "Complete at least one daily goal for 7 consecutive days",
     icon: "fa-solid fa-fire-flame-curved",
     condition: (data) => {
-
       return data.streak >= 7 && data.completedGoals && data.completedGoals.length >= 7
     },
     progress: (data) => {
@@ -422,6 +440,7 @@ const allAchievements = [
     },
     target: 7,
     xp: 100,
+    rarity: "🔵 Uncommon",
   },
   {
     id: "daily_sessions_3",
@@ -432,6 +451,7 @@ const allAchievements = [
     progress: (data) => Math.min(data.sessions.length, 3),
     target: 3,
     xp: 30,
+    rarity: "🟢 Common",
   },
   {
     id: "daily_sessions_5",
@@ -442,6 +462,7 @@ const allAchievements = [
     progress: (data) => Math.min(data.sessions.length, 5),
     target: 5,
     xp: 50,
+    rarity: "🔵 Uncommon",
   },
   {
     id: "weekend_warrior",
@@ -464,6 +485,7 @@ const allAchievements = [
     },
     target: 2,
     xp: 40,
+    rarity: "🟢 Common",
   },
   {
     id: "early_bird",
@@ -478,6 +500,30 @@ const allAchievements = [
     },
     target: 1,
     xp: 30,
+    rarity: "🟢 Common",
+  },
+  {
+    id: "early_bird_pro",
+    title: "Early Bird Pro",
+    description: "Study for 2 hours before 8 AM.",
+    icon: "fa-solid fa-sun",
+    condition: (data) => {
+      return data.sessions.some((session) => {
+        const startTime = new Date(session.startTime)
+        return startTime.getHours() < 8 && session.time >= 120
+      })
+    },
+    progress: (data) => {
+      const earlySessions = data.sessions.filter((session) => {
+        const startTime = new Date(session.startTime)
+        return startTime.getHours() < 8
+      })
+      const totalTime = earlySessions.reduce((sum, session) => sum + session.time, 0)
+      return Math.min(totalTime, 120)
+    },
+    target: 120,
+    xp: 150,
+    rarity: "🟠 Epic",
   },
   {
     id: "night_owl",
@@ -492,6 +538,30 @@ const allAchievements = [
     },
     target: 1,
     xp: 30,
+    rarity: "🟢 Common",
+  },
+  {
+    id: "night_owl_pro",
+    title: "Night Owl Pro",
+    description: "Study for 3 hours after 10 PM.",
+    icon: "fa-solid fa-moon",
+    condition: (data) => {
+      return data.sessions.some((session) => {
+        const startTime = new Date(session.startTime)
+        return startTime.getHours() >= 22 && session.time >= 180
+      })
+    },
+    progress: (data) => {
+      const nightSessions = data.sessions.filter((session) => {
+        const startTime = new Date(session.startTime)
+        return startTime.getHours() >= 22
+      })
+      const totalTime = nightSessions.reduce((sum, session) => sum + session.time, 0)
+      return Math.min(totalTime, 180)
+    },
+    target: 180,
+    xp: 150,
+    rarity: "🟠 Epic",
   },
   {
     id: "achievement_5",
@@ -508,6 +578,7 @@ const allAchievements = [
     },
     target: 5,
     xp: 50,
+    rarity: "🟢 Common",
   },
   {
     id: "achievement_15",
@@ -524,6 +595,7 @@ const allAchievements = [
     },
     target: 15,
     xp: 150,
+    rarity: "🔵 Uncommon",
   },
   {
     id: "achievement_30",
@@ -540,6 +612,7 @@ const allAchievements = [
     },
     target: 30,
     xp: 300,
+    rarity: "🟡 Rare",
   },
   {
     id: "achievement_50",
@@ -556,6 +629,7 @@ const allAchievements = [
     },
     target: 50,
     xp: 500,
+    rarity: "🟠 Epic",
   },
   {
     id: "perfect_week",
@@ -569,21 +643,9 @@ const allAchievements = [
     progress: (data) => Math.min(data.streak, 7),
     target: 7,
     xp: 70,
+    rarity: "🔵 Uncommon",
   },
-  {
-    id: "subject_master",
-    title: "Subject Master",
-    description: "Study the same subject for 5 hours total",
-    icon: "fa-solid fa-book-bookmark",
-    condition: (data) => {
-      // This is simplified since we don't track subject totals perfectly
-      // In a real app, you would aggregate by subject
-      return false // Placeholder
-    },
-    progress: () => 0, // Placeholder
-    target: 300, // 5 hours in minutes
-    xp: 100,
-  },
+
   {
     id: "marathon_studier",
     title: "Marathon Studier",
@@ -601,6 +663,7 @@ const allAchievements = [
     },
     target: 180, // 3 hours in minutes
     xp: 100,
+    rarity: "🟠 Epic",
   },
   {
     id: "streak_100",
@@ -611,22 +674,47 @@ const allAchievements = [
     progress: (data) => Math.min(data.streak, 100),
     target: 100,
     xp: 1000,
+    rarity: "🟠 Epic",
   },
   {
     id: "streak_365",
     title: "Year-Long Scholar",
     description: "Maintain a 365-day study streak",
-    icon: "fa-solid fa-calendar-xmark",
+    icon: "fa-solid fa-medal",
     condition: (data) => data.streak >= 365,
     progress: (data) => Math.min(data.streak, 365),
     target: 365,
     xp: 3650,
+    rarity: "🟣 Legendary",
+  },
+  {
+    id: "streak_500",
+    title: "Unstoppable Scholar",
+    description: "Maintain a 500-day study streak",
+    icon: "fa-solid fa-fire-flame-curved",
+    condition: (data) => data.streak >= 500,
+    progress: (data) => Math.min(data.streak, 500),
+    target: 500,
+    xp: 5000,
+    isHardcore: true,
+    rarity: "🟣 Legendary",
+  },
+  {
+    id: "streak_1000",
+    title: "Infinite Scholar",
+    description: "Maintain a 1000-day study streak",
+    icon: "fa-solid fa-infinity",
+    condition: (data) => data.streak >= 1000,
+    progress: (data) => Math.min(data.streak, 1000),
+    target: 1000,
+    xp: 9999,
+    rarity: "🟣 Legendary",
   },
   {
     id: "total_study_100h",
     title: "Scholar Legend",
     description: "Study for a total of 100 hours",
-    icon: "fa-solid fa-wand-sparkles",
+    icon: "fa-solid fa-meteor",
     condition: (data) => {
       const totalMinutes =
         Object.values(data.dailyTotals).reduce((sum, val) => sum + val, 0) +
@@ -641,6 +729,7 @@ const allAchievements = [
     },
     target: 6000,
     xp: 1000,
+    rarity: "🟣 Legendary",
   },
   {
     id: "subjects_10",
@@ -669,6 +758,19 @@ const allAchievements = [
     },
     target: 10,
     xp: 100,
+    rarity: "🟡 Rare",
+  },
+
+  {
+    id: "xp_collector_pro",
+    title: "XP Collector Pro",
+    description: "Earn 2,000 XP.",
+    icon: "fa-solid fa-award",
+    condition: (data) => data.xp >= 2000,
+    progress: (data) => Math.min(data.xp, 2000),
+    target: 2000,
+    xp: 200,
+    rarity: "🟡 Rare",
   },
   {
     id: "xp_10000",
@@ -679,6 +781,7 @@ const allAchievements = [
     progress: (data) => Math.min(data.xp, 10000),
     target: 10000,
     xp: 1000,
+    rarity: "🟣 Legendary",
   },
   {
     id: "daily_sessions_10",
@@ -689,6 +792,7 @@ const allAchievements = [
     progress: (data) => Math.min(data.sessions.length, 10),
     target: 10,
     xp: 100,
+    rarity: "🟡 Rare",
   },
   {
     id: "perfect_month",
@@ -699,34 +803,29 @@ const allAchievements = [
     progress: (data) => Math.min(data.streak, 30),
     target: 30,
     xp: 300,
+    rarity: "🟡 Rare",
   },
   {
-    id: "pomodoro_master",
-    title: "Pomodoro Master",
-    description: "Complete 50 pomodoro sessions",
-    icon: "fa-solid fa-stopwatch",
-    condition: (data) => {
-      return data.pomodoroCount && data.pomodoroCount >= 50
-    },
-    progress: (data) => {
-      return Math.min(data.pomodoroCount || 0, 50)
-    },
+    id: "study_streak_pro",
+    title: "Study Streak Pro",
+    description: "Maintain a 50-day study streak.",
+    icon: "fa-solid fa-fire",
+    condition: (data) => data.streak >= 50,
+    progress: (data) => Math.min(data.streak, 50),
     target: 50,
-    xp: 250,
+    xp: 500,
+    rarity: "🟡 Rare",
   },
   {
-    id: "pomodoro_legend",
-    title: "Pomodoro Legend",
-    description: "Complete 100 pomodoro sessions",
-    icon: "fa-solid fa-stopwatch-20",
-    condition: (data) => {
-      return data.pomodoroCount && data.pomodoroCount >= 100
-    },
-    progress: (data) => {
-      return Math.min(data.pomodoroCount || 0, 100)
-    },
-    target: 100,
-    xp: 500,
+    id: "perfect_quarter",
+    title: "Perfect Quarter",
+    description: "Study every day for 90 days.",
+    icon: "fa-solid fa-calendar-days",
+    condition: (data) => data.streak >= 90,
+    progress: (data) => Math.min(data.streak, 90),
+    target: 90,
+    xp: 900,
+    rarity: "🟣 Legendary",
   },
   {
     id: "level_10",
@@ -741,6 +840,7 @@ const allAchievements = [
     },
     target: 10,
     xp: 100,
+    rarity: "🟢 Common",
   },
   {
     id: "level_25",
@@ -755,6 +855,7 @@ const allAchievements = [
     },
     target: 25,
     xp: 250,
+    rarity: "🔵 Uncommon",
   },
   {
     id: "level_50",
@@ -769,6 +870,7 @@ const allAchievements = [
     },
     target: 50,
     xp: 500,
+    rarity: "🟡 Rare",
   },
   {
     id: "study_marathon",
@@ -787,97 +889,260 @@ const allAchievements = [
     },
     target: 300, // 5 hours in minutes
     xp: 300,
+    rarity: "🟡 Rare",
   },
-  
+  {
+    id: "study_ultra_marathon",
+    title: "Study Ultra Marathon",
+    description: "Study for 8 hours in a single day",
+    icon: "fa-solid fa-person-circle-check",
+    condition: (data) => {
+      const todayTotal = data.sessions.reduce((total, session) => total + session.time, 0)
+      const anyDayTotal = Object.values(data.dailyTotals).some((total) => total >= 480)
+      return todayTotal >= 480 || anyDayTotal
+    },
+    progress: (data) => {
+      const todayTotal = data.sessions.reduce((total, session) => total + session.time, 0)
+      const maxDayTotal = Math.max(todayTotal, ...Object.values(data.dailyTotals).map((v) => v || 0))
+      return Math.min(maxDayTotal, 480)
+    },
+    target: 480, // 8 hours in minutes
+    xp: 480,
+    rarity: "🟠 Epic",
+  },
+  {
+    id: "palindrome_time",
+    title: "Time Palindrome",
+    description: "Study for exactly a palindrome number of minutes (e.g., 101, 343)",
+    icon: "fa-solid fa-arrows-left-right",
+    condition: (data) => {
+      return data.sessions.some((session) => {
+        const timeStr = session.time.toString()
+        const reversedTimeStr = timeStr.split("").reverse().join("")
+        return timeStr === reversedTimeStr && timeStr.length > 1
+      })
+    },
+    progress: (data) => {
+      const palindromeSession = data.sessions.some((session) => {
+        const timeStr = session.time.toString()
+        const reversedTimeStr = timeStr.split("").reverse().join("")
+        return timeStr === reversedTimeStr && timeStr.length > 1
+      })
+      return palindromeSession ? 1 : 0
+    },
+    target: 1,
+    xp: 121,
+    isSecret: true,
+    rarity: "🟣 Legendary",
+  },
+  {
+    id: "fibonacci_study",
+    title: "Fibonacci Scholar",
+    description: "Study for a Fibonacci number of minutes (1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144)",
+    icon: "fa-solid fa-calculator",
+    condition: (data) => {
+      const fibonacciNumbers = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
+      return data.sessions.some((session) => fibonacciNumbers.includes(session.time))
+    },
+    progress: (data) => {
+      const fibonacciNumbers = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
+      const fibSession = data.sessions.some((session) => fibonacciNumbers.includes(session.time))
+      return fibSession ? 1 : 0
+    },
+    target: 1,
+    xp: 89,
+    isSecret: true,
+    rarity: "🟣 Legendary",
+  },
+  {
+    id: "pi_time",
+    title: "Pi Time",
+    description: "Study for 314 minutes in a single day",
+    icon: "fa-solid fa-circle",
+    condition: (data) => {
+      const todayTotal = data.sessions.reduce((total, session) => total + session.time, 0)
+      const anyDayTotal = Object.values(data.dailyTotals).some((total) => total === 314)
+      return todayTotal === 314 || anyDayTotal
+    },
+    progress: (data) => {
+      const todayTotal = data.sessions.reduce((total, session) => total + session.time, 0)
+      const maxDayTotal = Math.max(todayTotal, ...Object.values(data.dailyTotals).map((v) => v || 0))
+      return Math.min(maxDayTotal, 314)
+    },
+    target: 314,
+    xp: 314,
+    isSecret: true,
+    rarity: "🟣 Legendary",
+  },
+
+  {
+    id: "study_all_subjects",
+    title: "Jack of All Trades",
+    description: "Study 7 different subjects in a single day",
+    icon: "fa-solid fa-hat-wizard",
+    condition: (data) => {
+      const uniqueSubjectsToday = new Set(data.sessions.map((session) => session.subject))
+      return uniqueSubjectsToday.size >= 7
+    },
+    progress: (data) => {
+      const uniqueSubjectsToday = new Set(data.sessions.map((session) => session.subject))
+      return Math.min(uniqueSubjectsToday.size, 7)
+    },
+    target: 7,
+    xp: 77,
+    isWeird: true,
+    rarity: "🟣 Legendary",
+  },
+  {
+    id: "prime_time",
+    title: "Prime Time",
+    description: "Study for a prime number of minutes 5 times",
+    icon: "fa-solid fa-superscript",
+    condition: (data) => {
+      const isPrime = (num) => {
+        if (num <= 1) return false
+        if (num <= 3) return true
+        if (num % 2 === 0 || num % 3 === 0) return false
+        let i = 5
+        while (i * i <= num) {
+          if (num % i === 0 || num % (i + 2) === 0) return false
+          i += 6
+        }
+        return true
+      }
+
+      const primeSessionsCount = data.sessions.filter((session) => isPrime(session.time)).length
+      return primeSessionsCount >= 5
+    },
+    progress: (data) => {
+      const isPrime = (num) => {
+        if (num <= 1) return false
+        if (num <= 3) return true
+        if (num % 2 === 0 || num % 3 === 0) return false
+        let i = 5
+        while (i * i <= num) {
+          if (num % i === 0 || num % (i + 2) === 0) return false
+          i += 6
+        }
+        return true
+      }
+
+      const primeSessionsCount = data.sessions.filter((session) => isPrime(session.time)).length
+      return Math.min(primeSessionsCount, 5)
+    },
+    target: 5,
+    xp: 113,
+    isWeird: true,
+    rarity: "🟣 Legendary",
+  },
+
+ 
+  {
+    id: "study_10000_hours",
+    title: "Mastery",
+    description: "Study for a total of 10,000 hours",
+    icon: "fa-solid fa-crown",
+    condition: (data) => {
+      const totalMinutes =
+        Object.values(data.dailyTotals).reduce((sum, val) => sum + val, 0) +
+        data.sessions.reduce((sum, session) => sum + session.time, 0)
+      return totalMinutes >= 600000 // 10,000 hours = 600,000 minutes
+    },
+    progress: (data) => {
+      const totalMinutes =
+        Object.values(data.dailyTotals).reduce((sum, val) => sum + val, 0) +
+        data.sessions.reduce((sum, session) => sum + session.time, 0)
+      return Math.min(totalMinutes, 600000)
+    },
+    target: 600000,
+    xp: 10000,
+    isHardcore: true,
+    rarity: "🟣 Legendary",
+  },
+  {
+    id: "explore_10_stars",
+    title: "Star Explorer",
+    description: "Explore 10 stars in the galaxy.",
+    icon: "fa-solid fa-star",
+    condition: (data) => data.galaxyExplored && data.galaxyExplored.length >= 10,
+    progress: (data) => (data.galaxyExplored ? Math.min(data.galaxyExplored.length, 10) : 0),
+    target: 10,
+    xp: 50,
+    rarity: "🟢 Common",
+  },
+  {
+    id: "discover_5_constellations",
+    title: "Constellation Discoverer",
+    description: "Discover 5 constellations in the galaxy.",
+    icon: "fa-solid fa-satellite",
+    condition: (data) => data.constellationsDiscovered >= 5,
+    progress: (data) => Math.min(data.constellationsDiscovered, 5),
+    target: 5,
+    xp: 100,
+    rarity: "🔵 Uncommon",
+  },
+  {
+    id: "collect_all_spectral_types",
+    title: "Spectral Collector",
+    description: "Collect all 7 spectral types (O, B, A, F, G, K, M).",
+    icon: "fa-solid fa-circle-half-stroke",
+    condition: (data) =>
+      data.spectralTypesCollected &&
+      ["O", "B", "A", "F", "G", "K", "M"].every((type) => data.spectralTypesCollected.includes(type)),
+    progress: (data) => (data.spectralTypesCollected ? Math.min(data.spectralTypesCollected.length, 7) : 0),
+    target: 7,
+    xp: 200,
+    rarity: "🟡 Rare",
+  },
+  {
+    id: "explore_50_stars",
+    title: "Galaxy Pioneer",
+    description: "Explore 50 stars in the galaxy.",
+    icon: "fa-solid fa-star-and-crescent",
+    condition: (data) => data.galaxyExplored && data.galaxyExplored.length >= 50,
+    progress: (data) => (data.galaxyExplored ? Math.min(data.galaxyExplored.length, 50) : 0),
+    target: 50,
+    xp: 500,
+    rarity: "🟠 Epic",
+  },
+  {
+    id: "discover_20_constellations",
+    title: "Constellation Master",
+    description: "Discover 20 constellations in the galaxy.",
+    icon: "fa-solid fa-satellite-dish",
+    condition: (data) => data.constellationsDiscovered >= 20,
+    progress: (data) => Math.min(data.constellationsDiscovered, 20),
+    target: 20,
+    xp: 1000,
+    rarity: "🟣 Legendary",
+  },
+  {
+    id: "explore_100_stars",
+    title: "Galaxy Voyager",
+    description: "Explore 100 stars in the galaxy.",
+    icon: "fa-solid fa-star-and-crescent",
+    condition: (data) => data.galaxyExplored && data.galaxyExplored.length >= 100,
+    progress: (data) => (data.galaxyExplored ? Math.min(data.galaxyExplored.length, 100) : 0),
+    target: 100,
+    xp: 1000,
+    rarity: "🟠 Epic",
+  },
+
+  {
+    id: "explore_25_stars",
+    title: "Galactic Explorer",
+    description: "Explore 25 stars in the galaxy.",
+    icon: "fa-solid fa-star",
+    condition: (data) => data.galaxyExplored && data.galaxyExplored.length >= 25,
+    progress: (data) => (data.galaxyExplored ? Math.min(data.galaxyExplored.length, 25) : 0),
+    target: 25,
+    xp: 150,
+    rarity: "🔵 Uncommon",
+  },
 ]
-
-// Add this function to display equipped badges
-function displayEquippedBadges() {
-  const equippedBadgesElement = document.getElementById("equipped-badges")
-  if (!equippedBadgesElement) return
-
-  // Load store data
-  const storeData = JSON.parse(localStorage.getItem("storeData") || '{"inventory":[]}')
-
-  // Filter equipped badges
-  const equippedBadges = storeData.inventory.filter((item) => item.id.startsWith("badge_") && item.equipped)
-
-  // Clear existing badges
-  equippedBadgesElement.innerHTML = ""
-
-  if (equippedBadges.length === 0) {
-    equippedBadgesElement.innerHTML =
-      '<p class="empty-inventory">You haven\'t equipped any badges yet. Visit the store to purchase and equip badges!</p>'
-    return
-  }
-
-  // Define badge data (same as in store.js)
-  const badgeData = {
-    badge_master_scholar: {
-      name: "Master Scholar",
-      description: "For the dedicated learner",
-      icon: "fa-solid fa-graduation-cap",
-      animation: "pulse",
-    },
-    badge_time_wizard: {
-      name: "Time Wizard",
-      description: "Master of time management",
-      icon: "fa-solid fa-clock",
-      animation: "rotate",
-    },
-    badge_knowledge_seeker: {
-      name: "Knowledge Seeker",
-      description: "Always curious, always learning",
-      icon: "fa-solid fa-book-open",
-      animation: "sparkle",
-    },
-    badge_focus_master: {
-      name: "Focus Master",
-      description: "Exceptional concentration skills",
-      icon: "fa-solid fa-bullseye",
-      animation: "pulse",
-    },
-    badge_night_owl: {
-      name: "Night Owl Pro",
-      description: "Premium version of Night Owl",
-      icon: "fa-solid fa-moon",
-      animation: "sparkle",
-    },
-    badge_early_riser: {
-      name: "Early Riser Pro",
-      description: "Premium version of Early Bird",
-      icon: "fa-solid fa-sun",
-      animation: "rotate",
-    },
-  }
-
-  // Add badges to the grid with the new compact style
-  equippedBadges.forEach((badge) => {
-    const badgeInfo = badgeData[badge.id]
-    if (!badgeInfo) return
-
-    const badgeElement = document.createElement("div")
-    badgeElement.className = `badge-item badge-animated ${badgeInfo.animation}`
-
-    badgeElement.innerHTML = `
-      <div class="badge-icon">
-        <i class="${badgeInfo.icon}"></i>
-      </div>
-      <div class="badge-details">
-        <p class="badge-name">${badgeInfo.name}</p>
-        <p class="badge-description">${badgeInfo.description}</p>
-      </div>
-    `
-
-    equippedBadgesElement.appendChild(badgeElement)
-  })
-}
 
 // Update UI
 function updateUI(data) {
-  // Existing code...
-
-  // Update stats
   totalXpElement.textContent = `${data.xp} XP`
 
   // Fix achievement counting by checking all achievements
@@ -887,51 +1152,13 @@ function updateUI(data) {
       unlockedCount++
     }
   })
-  achievementsCountElement.textContent = `${unlockedCount}/48`
+  achievementsCountElement.textContent = `${unlockedCount}/${allAchievements.length}`
 
   streakCountElement.textContent = `${data.streak} days`
 
   // Update achievements list
   updateAchievementsList(data)
-
-  // Display equipped badges
-  displayEquippedBadges()
-
-  // Load theme if saved
-  const savedThemeId = localStorage.getItem("themeId")
-  if (savedThemeId) {
-    const storeData = JSON.parse(localStorage.getItem("storeData") || '{"inventory":[]}')
-    const theme = storeData.inventory.find((item) => item.id === savedThemeId)
-    if (theme) {
-      applyThemeToUI(savedThemeId)
-    }
-  }
 }
-
-// Add this function to apply theme
-function applyThemeToUI(themeId) {
-  // Remove existing theme classes
-  document.body.classList.remove("theme-dark-forest", "theme-ocean-blue", "theme-sunset")
-
-  // Add new theme class
-  if (themeId === "theme_dark_forest") {
-    document.body.classList.add("theme-dark-forest")
-    document.documentElement.style.setProperty("--primary-color", "#2ecc71")
-    document.documentElement.style.setProperty("--primary-dark", "#27ae60")
-    document.documentElement.style.setProperty("--primary-light", "#a3e4c1")
-  } else if (themeId === "theme_ocean_blue") {
-    document.body.classList.add("theme-ocean-blue")
-    document.documentElement.style.setProperty("--primary-color", "#3498db")
-    document.documentElement.style.setProperty("--primary-dark", "#2980b9")
-    document.documentElement.style.setProperty("--primary-light", "#a9cce3")
-  } else if (themeId === "theme_sunset") {
-    document.body.classList.add("theme-sunset")
-    document.documentElement.style.setProperty("--primary-color", "#e67e22")
-    document.documentElement.style.setProperty("--primary-dark", "#d35400")
-    document.documentElement.style.setProperty("--primary-light", "#f5cba7")
-  }
-}
-
 // Update achievements list
 function updateAchievementsList(data) {
   achievementsListElement.innerHTML = ""
@@ -953,12 +1180,23 @@ function updateAchievementsList(data) {
     // Check if achievement is unlocked
     if (!achievementData.unlocked && achievement.condition(data)) {
       achievementData.unlocked = true
-      // We don't add XP here to avoid duplicating XP when viewing the page
     }
 
     // Create achievement element
     const achievementItem = document.createElement("div")
     achievementItem.className = `achievement-item ${achievementData.unlocked ? "achievement-unlocked" : ""}`
+
+    // Add data-rarity attribute for CSS targeting
+    if (achievementData.unlocked) {
+      // Extract rarity level from the emoji text
+      let rarityLevel = "common"
+      if (achievement.rarity.includes("🔵")) rarityLevel = "uncommon"
+      if (achievement.rarity.includes("🟡")) rarityLevel = "rare"
+      if (achievement.rarity.includes("🟠")) rarityLevel = "epic"
+      if (achievement.rarity.includes("🟣")) rarityLevel = "legendary"
+
+      achievementItem.setAttribute("data-rarity", rarityLevel)
+    }
 
     const achievementHeader = document.createElement("div")
     achievementHeader.className = "achievement-header"
@@ -971,8 +1209,13 @@ function updateAchievementsList(data) {
     achievementTitle.className = "achievement-title"
     achievementTitle.textContent = achievement.title
 
+    const achievementRarity = document.createElement("div")
+    achievementRarity.className = "achievement-rarity"
+    achievementRarity.textContent = achievement.rarity // Display rarity
+
     achievementHeader.appendChild(achievementIcon)
     achievementHeader.appendChild(achievementTitle)
+    achievementHeader.appendChild(achievementRarity) // Add rarity to the header
 
     const achievementDescription = document.createElement("div")
     achievementDescription.className = "achievement-description"
@@ -989,7 +1232,9 @@ function updateAchievementsList(data) {
 
     const progressText = document.createElement("div")
     progressText.className = "achievement-progress-text"
-    progressText.textContent = `${achievementData.progress}/${achievement.target} ${achievementData.unlocked ? "(+" + achievement.xp + " XP)" : ""}`
+    progressText.textContent = `${achievementData.progress}/${achievement.target} ${
+      achievementData.unlocked ? "(+" + achievement.xp + " XP)" : ""
+    }`
 
     achievementItem.appendChild(achievementHeader)
     achievementItem.appendChild(achievementDescription)
@@ -1007,85 +1252,42 @@ themeToggle.addEventListener("click", toggleDarkMode)
 if (localStorage.getItem("darkMode") === "true") {
   document.body.classList.add("dark-mode")
 }
-// Load theme if saved
-const savedThemeId = localStorage.getItem("themeId")
-if (savedThemeId) {
-  const storeData = JSON.parse(localStorage.getItem("storeData") || '{"inventory":[]}')
-  const theme = storeData.inventory.find((item) => item.id === savedThemeId)
-  if (theme) {
-    applyThemeToUI(savedThemeId)
+// Apply theme from profile
+function applyThemeFromProfile() {
+  const profileData = JSON.parse(localStorage.getItem("profileData") || "{}")
+
+  if (profileData.selectedTheme) {
+    // Remove any existing theme classes
+    const themeClasses = ["theme-default", "theme-sunset", "theme-midnight", "theme-neon", "theme-nature"]
+    document.body.classList.remove(...themeClasses)
+
+    // Add selected theme class
+    document.body.classList.add(getThemeClass(profileData.selectedTheme))
   }
 }
 
-// Apply theme to UI
-function applyThemeToUI(themeId) {
-  // Remove existing theme classes
-  document.body.classList.remove(
-    "theme-dark-forest", 
-    "theme-ocean-blue", 
-    "theme-sunset", 
-    "theme-purple-haze", 
-    "theme-mint-fresh", 
-    "theme-dark-mode-pro", 
-    "theme-coral-reef", 
-    "theme-cherry-blossom", 
-    "theme-cyber-punk"
-  )
-
-  // Add new theme class
-  if (themeId === "theme_dark_forest") {
-    document.body.classList.add("theme-dark-forest")
-    document.documentElement.style.setProperty("--primary-color", "#2ecc71")
-    document.documentElement.style.setProperty("--primary-dark", "#27ae60")
-    document.documentElement.style.setProperty("--primary-light", "#a3e4c1")
-  } else if (themeId === "theme_ocean_blue") {
-    document.body.classList.add("theme-ocean-blue")
-    document.documentElement.style.setProperty("--primary-color", "#3498db")
-    document.documentElement.style.setProperty("--primary-dark", "#2980b9")
-    document.documentElement.style.setProperty("--primary-light", "#a9cce3")
-  } else if (themeId === "theme_sunset") {
-    document.body.classList.add("theme-sunset")
-    document.documentElement.style.setProperty("--primary-color", "#e67e22")
-    document.documentElement.style.setProperty("--primary-dark", "#d35400")
-    document.documentElement.style.setProperty("--primary-light", "#f5cba7")
-  } else if (themeId === "theme_purple_haze") {
-    document.body.classList.add("theme-purple-haze")
-    document.documentElement.style.setProperty("--primary-color", "#9b59b6")
-    document.documentElement.style.setProperty("--primary-dark", "#8e44ad")
-    document.documentElement.style.setProperty("--primary-light", "#d7bde2")
-  } else if (themeId === "theme_mint_fresh") {
-    document.body.classList.add("theme-mint-fresh")
-    document.documentElement.style.setProperty("--primary-color", "#1abc9c")
-    document.documentElement.style.setProperty("--primary-dark", "#16a085")
-    document.documentElement.style.setProperty("--primary-light", "#a3e4d7")
-  } else if (themeId === "theme_dark_mode_pro") {
-    document.body.classList.add("theme-dark-mode-pro")
-    document.documentElement.style.setProperty("--primary-color", "#6c5ce7")
-    document.documentElement.style.setProperty("--primary-dark", "#5641e5")
-    document.documentElement.style.setProperty("--primary-light", "#a29bfe")
-  } else if (themeId === "theme_coral_reef") {
-    document.body.classList.add("theme-coral-reef")
-    document.documentElement.style.setProperty("--primary-color", "#ff7675")
-    document.documentElement.style.setProperty("--primary-dark", "#e84393")
-    document.documentElement.style.setProperty("--primary-light", "#fab1a0")
-  } else if (themeId === "theme_cherry_blossom") {
-    document.body.classList.add("theme-cherry-blossom")
-    document.documentElement.style.setProperty("--primary-color", "#fd79a8")
-    document.documentElement.style.setProperty("--primary-dark", "#e84393")
-    document.documentElement.style.setProperty("--primary-light", "#ffeaa7")
-  } else if (themeId === "theme_cyber_punk") {
-    document.body.classList.add("theme-cyber-punk")
-    document.documentElement.style.setProperty("--primary-color", "#00f5d4")
-    document.documentElement.style.setProperty("--primary-dark", "#00b8a9")
-    document.documentElement.style.setProperty("--primary-light", "#f706cf")
+// Get theme class from theme ID
+function getThemeClass(themeId) {
+  const themeMap = {
+    default: "theme-default",
+    "sunset-mode": "theme-sunset",
+    "midnight-focus": "theme-midnight",
+    "neon-hacker": "theme-neon",
+    "nature-calm": "theme-nature",
   }
 
-  // Save theme preference
-  localStorage.setItem("themeId", themeId)
+  return themeMap[themeId] || "theme-default"
 }
+
+// Listen for galaxy data updates
+document.addEventListener("galaxyDataUpdated", () => {
+  // Reload data and update UI
+  let studyData = loadData()
+  studyData = ensureAllAchievementsInitialized(studyData)
+  updateUI(studyData)
+})
 
 // Initialize
 let studyData = loadData()
 studyData = ensureAllAchievementsInitialized(studyData)
 updateUI(studyData)
-

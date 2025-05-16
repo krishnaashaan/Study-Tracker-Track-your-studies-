@@ -1,4 +1,8 @@
+// Import necessary modules
 import { getDailyContent, levelSystem } from "./quotes-tips.js"
+import { initEnergySystem, drainEnergy, hasEnoughEnergy, resetEnergyForNewDay } from "./energy-system.js"
+import "./shadow-achievements.js"
+const topicInput = document.getElementById("topic")
 
 // Initialize data structure
 let studyData = {
@@ -14,13 +18,16 @@ let studyData = {
     earlyBird: false,
     nightOwl: false,
   },
+  lastGoalUpdateTimestamp: null, // Track when goals were last updated
 }
 
 // Add this to the studyData initialization
 if (!studyData.goals) {
   studyData.goals = []
 }
-
+if (!studyData.topics) {
+  studyData.topics = []
+}
 if (!studyData.activeGoals) {
   studyData.activeGoals = []
 }
@@ -29,8 +36,13 @@ if (!studyData.completedGoals) {
   studyData.completedGoals = []
 }
 
+if (!studyData.previousDayGoals) {
+  studyData.previousDayGoals = []
+}
+
 // Add this predefined goals array after the studyData initialization
 const predefinedGoals = [
+  // Original goals
   {
     id: "daily_60_min",
     title: "Daily Hour",
@@ -73,7 +85,18 @@ const predefinedGoals = [
     xpReward: 25,
     category: "Subject",
     icon: "fa-language",
-    subjectFilter: ["language", "english", "spanish", "french", "german", "japanese", "chinese", "korean", "italian"],
+    subjectFilter: [
+      "language",
+      "english",
+      "spanish",
+      "french",
+      "german",
+      "japanese",
+      "chinese",
+      "korean",
+      "italian",
+      "portuguese",
+    ],
     condition: (data) => {
       const languageSessions = data.sessions.filter((session) =>
         predefinedGoals
@@ -246,7 +269,7 @@ const predefinedGoals = [
     target: 60, // minutes
     xpReward: 50,
     category: "Tag",
-    icon: "fa-file-pen",
+    icon: "fa-file-alt",
     condition: (data) => {
       const examSessions = data.sessions.filter((session) => session.tag && session.tag.toLowerCase() === "exam prep")
       const examTotal = examSessions.reduce((total, session) => total + session.time, 0)
@@ -256,6 +279,149 @@ const predefinedGoals = [
       const examSessions = data.sessions.filter((session) => session.tag && session.tag.toLowerCase() === "exam prep")
       const examTotal = examSessions.reduce((total, session) => total + session.time, 0)
       return Math.min(examTotal, 60)
+    },
+  },
+
+  {
+    id: "daily_180_min",
+    title: "Study Marathon",
+    description: "Study for at least 3 hours today",
+    target: 180, // minutes
+    xpReward: 90,
+    category: "Daily",
+    icon: "fa-trophy",
+    condition: (data) => {
+      const todayTotal = data.sessions.reduce((total, session) => total + session.time, 0)
+      return todayTotal >= 180
+    },
+    progress: (data) => {
+      const todayTotal = data.sessions.reduce((total, session) => total + session.time, 0)
+      return Math.min(todayTotal, 180)
+    },
+  },
+  {
+    id: "daily_240_min",
+    title: "Study Champion",
+    description: "Study for at least 4 hours today",
+    target: 240, // minutes
+    xpReward: 120,
+    category: "Daily",
+    icon: "fa-crown",
+    condition: (data) => {
+      const todayTotal = data.sessions.reduce((total, session) => total + session.time, 0)
+      return todayTotal >= 240
+    },
+    progress: (data) => {
+      const todayTotal = data.sessions.reduce((total, session) => total + session.time, 0)
+      return Math.min(todayTotal, 240)
+    },
+  },
+  {
+    id: "computer_science_study",
+    title: "Code Wizard",
+    description: "Study programming or computer science for at least 45 minutes",
+    target: 45, // minutes
+    xpReward: 40,
+    category: "Subject",
+    icon: "fa-code",
+    subjectFilter: [
+      "programming",
+      "coding",
+      "computer science",
+      "web development",
+      "javascript",
+      "python",
+      "java",
+      "c++",
+      "algorithms",
+    ],
+    condition: (data) => {
+      const csSessions = data.sessions.filter((session) =>
+        predefinedGoals
+          .find((g) => g.id === "computer_science_study")
+          .subjectFilter.some((cs) => session.subject.toLowerCase().includes(cs)),
+      )
+      const csTotal = csSessions.reduce((total, session) => total + session.time, 0)
+      return csTotal >= 45
+    },
+    progress: (data) => {
+      const csSessions = data.sessions.filter((session) =>
+        predefinedGoals
+          .find((g) => g.id === "computer_science_study")
+          .subjectFilter.some((cs) => session.subject.toLowerCase().includes(cs)),
+      )
+      const csTotal = csSessions.reduce((total, session) => total + session.time, 0)
+      return Math.min(csTotal, 45)
+    },
+  },
+  {
+    id: "afternoon_study",
+    title: "Afternoon Scholar",
+    description: "Study for at least 30 minutes between 12 PM and 5 PM",
+    target: 30, // minutes
+    xpReward: 25,
+    category: "Time",
+    icon: "fa-cloud-sun",
+    condition: (data) => {
+      const afternoonSessions = data.sessions.filter((session) => {
+        const sessionDate = new Date(session.timestamp)
+        const hour = sessionDate.getHours()
+        return hour >= 12 && hour < 17
+      })
+      const afternoonTotal = afternoonSessions.reduce((total, session) => total + session.time, 0)
+      return afternoonTotal >= 30
+    },
+    progress: (data) => {
+      const afternoonSessions = data.sessions.filter((session) => {
+        const sessionDate = new Date(session.timestamp)
+        const hour = sessionDate.getHours()
+        return hour >= 12 && hour < 17
+      })
+      const afternoonTotal = afternoonSessions.reduce((total, session) => total + session.time, 0)
+      return Math.min(afternoonTotal, 30)
+    },
+  },
+  {
+    id: "weekend_warrior",
+    title: "Weekend Warrior",
+    description: "Study for at least 60 minutes on a weekend day",
+    target: 60, // minutes
+    xpReward: 40,
+    category: "Time",
+    icon: "fa-calendar-day",
+    condition: (data) => {
+      const today = new Date()
+      const isWeekend = today.getDay() === 0 || today.getDay() === 6 // 0 is Sunday, 6 is Saturday
+      if (!isWeekend) return false
+
+      const todayTotal = data.sessions.reduce((total, session) => total + session.time, 0)
+      return todayTotal >= 60
+    },
+    progress: (data) => {
+      const today = new Date()
+      const isWeekend = today.getDay() === 0 || today.getDay() === 6
+      if (!isWeekend) return 0
+
+      const todayTotal = data.sessions.reduce((total, session) => total + session.time, 0)
+      return Math.min(todayTotal, 60)
+    },
+  },
+
+  {
+    id: "consistent_study",
+    title: "Consistency King",
+    description: "Study at least 3 times today with sessions of 15+ minutes",
+    target: 3, // sessions
+    xpReward: 45,
+    category: "Challenge",
+    icon: "fa-calendar-check",
+    condition: (data) => {
+      const validSessions = data.sessions.filter((session) => session.time >= 15)
+      return validSessions.length >= 3
+    },
+    progress: (data) => {
+      const validSessions = data.sessions.filter((session) => session.time >= 15)
+      return Math.min(validSessions.length, 3)
     },
   },
 ]
@@ -323,6 +489,9 @@ function showNotification(title, message) {
   setTimeout(() => {
     notification.classList.add("show")
   }, 10)
+  // Play sound
+  const audio = new Audio("./sounds/achievement.mp3")
+  audio.play()
 
   // Remove after 3 seconds
   setTimeout(() => {
@@ -339,6 +508,9 @@ function createFireworks() {
   let fireworkContainer = document.querySelector(".firework-container")
   if (fireworkContainer) {
     fireworkContainer.remove()
+    // Play sound
+    const audio = new Audio("./sounds/levelup.mp3")
+    audio.play()
   }
 
   fireworkContainer = document.createElement("div")
@@ -495,7 +667,9 @@ function resetAllData() {
       goals: [],
       activeGoals: [],
       completedGoals: [],
+      previousDayGoals: [],
       dailyGoalsCompleted: false,
+      lastGoalUpdateTimestamp: null,
     }
 
     saveData()
@@ -508,7 +682,7 @@ function resetAllData() {
   }
 }
 
-// Modify the loadData function to fix the goal assignment issue
+// Modify the loadData function to implement daily goal generation with 24-hour check
 function loadData() {
   const savedData = localStorage.getItem("studyTrackerData")
   if (savedData) {
@@ -526,8 +700,16 @@ function loadData() {
       if (studyData.lastStudyDate === yesterdayString) {
         studyData.streak++
       } else if (studyData.lastStudyDate !== today) {
-        // Reset streak if there was no activity yesterday and none today yet
-        studyData.streak = 0
+        // Check if a streak freeze should be applied
+        const shouldApplyStreakFreeze = checkStreakFreeze(yesterday)
+
+        if (shouldApplyStreakFreeze) {
+          // Maintain streak if a freeze was applied
+          studyData.streak = Math.max(1, studyData.streak)
+        } else {
+          // Reset streak if there was no activity yesterday and no freeze
+          studyData.streak = 0
+        }
       }
 
       // Save today's sessions to dailySessions before resetting
@@ -538,6 +720,13 @@ function loadData() {
         studyData.dailySessions[studyData.currentDay] = [...studyData.sessions]
       }
 
+      // Store previous day's active goals before resetting
+      if (studyData.previousDayGoals) {
+        studyData.previousDayGoals = [...studyData.activeGoals]
+      } else {
+        studyData.previousDayGoals = []
+      }
+
       // Reset for new day
       studyData.currentDay = today
       studyData.sessions = []
@@ -545,8 +734,14 @@ function loadData() {
       // Reset dailyGoalsCompleted flag for the new day
       studyData.dailyGoalsCompleted = false
 
-      // Assign new daily goals for the new day
-      assignDailyGoals()
+      // Clear active goals to prepare for new assignment
+      studyData.activeGoals = []
+
+      // Reset lastGoalUpdateTimestamp to force goal update
+      studyData.lastGoalUpdateTimestamp = null
+
+      // Reset energy for the new day
+      resetEnergyForNewDay()
 
       // Save the updated data
       saveData()
@@ -561,13 +756,27 @@ function loadData() {
       studyData.completedGoals = []
     }
 
+    if (!studyData.previousDayGoals) {
+      studyData.previousDayGoals = []
+    }
+
     if (studyData.dailyGoalsCompleted === undefined) {
       studyData.dailyGoalsCompleted = false
     }
 
-    // If no daily goals are assigned yet AND we haven't completed all goals for today, assign them
-    if (studyData.activeGoals.length === 0 && !studyData.dailyGoalsCompleted) {
+    if (studyData.lastGoalUpdateTimestamp === undefined) {
+      studyData.lastGoalUpdateTimestamp = null
+    }
+
+    // Check if goals need to be updated (null or more than 24 hours old)
+    const now = new Date().getTime()
+    const shouldUpdateGoals =
+      !studyData.lastGoalUpdateTimestamp || now - studyData.lastGoalUpdateTimestamp > 24 * 60 * 60 * 1000
+
+    // If no active goals are assigned yet or it's time for an update, assign them
+    if (shouldUpdateGoals) {
       assignDailyGoals()
+      studyData.lastGoalUpdateTimestamp = now
       saveData()
     }
 
@@ -577,10 +786,68 @@ function loadData() {
     }
   }
 
+  // Initialize energy system
+  initEnergySystem()
+
   updateUI()
   updateDailyContent()
   updateLevelSystem()
   updateStreakFlame(studyData.streak || 0)
+}
+
+// Function to check if a streak freeze should be applied
+function checkStreakFreeze(date) {
+  // Load profile data to check for streak freezes
+  const profileData = JSON.parse(localStorage.getItem("profileData") || "{}")
+
+  // If no profile data or no streak freezes, return false
+  if (!profileData || profileData.streakFreezes <= 0) {
+    return false
+  }
+
+  // Format the date to match localStorage format
+  const dateString = date.toLocaleDateString()
+
+  // Check if a streak freeze was already used for this date
+  const alreadyUsed =
+    profileData.streakFreezeHistory &&
+    profileData.streakFreezeHistory.some((freeze) => new Date(freeze.date).toLocaleDateString() === dateString)
+
+  if (alreadyUsed) {
+    return true
+  }
+
+  // Use a streak freeze
+  profileData.streakFreezes--
+
+  // Record the usage
+  if (!profileData.streakFreezeHistory) {
+    profileData.streakFreezeHistory = []
+  }
+
+  profileData.streakFreezeHistory.push({
+    date: date.toISOString(),
+    used: new Date().toISOString(),
+  })
+
+  // Save profile data
+  localStorage.setItem("profileData", JSON.stringify(profileData))
+
+  // Show notification about streak freeze usage
+  setTimeout(() => {
+    showNotification("Streak Freeze Applied", "A streak freeze was used to maintain your streak!")
+  }, 1000)
+
+  return true
+}
+
+function checkBurnoutWarning() {
+  const totalStudyTime = studyData.sessions.reduce((total, session) => total + session.time, 0)
+
+  if (totalStudyTime > 300) {
+    // 300 minutes = 5 hours
+    showNotification("Take a Break", "You've been crushing it — maybe take a break?")
+  }
 }
 
 // Add this function to update the daily content
@@ -641,22 +908,6 @@ function updateLevelSystem() {
   } else {
     nextLevelXpElement.textContent = "Max Level Reached!"
   }
-
-  // Update perks list
-  levelPerksListElement.innerHTML = ""
-
-  unlockedPerks.forEach((perk) => {
-    const perkElement = document.createElement("div")
-    perkElement.className = "level-perk-item"
-    perkElement.innerHTML = `
-      <div class="level-perk-header">
-        <div class="level-perk-level">${perk.level}</div>
-        <div class="level-perk-name">${perk.name}</div>
-      </div>
-      <div class="level-perk-description">${perk.description}</div>
-    `
-    levelPerksListElement.appendChild(perkElement)
-  })
 }
 
 // Add this function to show level up notification
@@ -780,38 +1031,50 @@ function updateProfileOnLevelUp(newLevel) {
   localStorage.setItem("profileData", JSON.stringify(profileData))
 }
 
-// Add this new function to assign daily goals
+// Revamped function to assign daily goals
 function assignDailyGoals() {
-  // Don't assign new goals if all goals for today are already completed
-  if (studyData.dailyGoalsCompleted) {
-    return
-  }
+  console.log("Assigning daily goals...")
 
   // Clear existing active goals
   studyData.activeGoals = []
 
-  // Get all available goals
-  const availableGoals = predefinedGoals.filter((goal) => !studyData.completedGoals.includes(goal.id))
-
-  // Prioritize daily goals
-  const dailyGoals = availableGoals.filter((goal) => goal.category === "Daily")
-  const otherGoals = availableGoals.filter((goal) => goal.category !== "Daily")
-
-  // Shuffle the arrays
-  const shuffledDaily = shuffleArray([...dailyGoals])
-  const shuffledOther = shuffleArray([...otherGoals])
-
-  // Combine and take the first 3 goals
-  const selectedGoals = [...shuffledDaily, ...shuffledOther].slice(0, 3)
-
-  // Add to active goals
-  selectedGoals.forEach((goal) => {
-    studyData.activeGoals.push({
-      id: goal.id,
-      startedAt: new Date().toISOString(),
-      completed: false,
+  // First, prioritize goals from the previous day
+  if (studyData.previousDayGoals && studyData.previousDayGoals.length > 0) {
+    // Add all previous day's goals to active goals
+    studyData.previousDayGoals.forEach((prevGoal) => {
+      studyData.activeGoals.push({
+        id: prevGoal.id,
+        startedAt: new Date().toISOString(),
+        completed: false,
+        repeatedFromPreviousDay: true,
+      })
     })
-  })
+  }
+
+  // If we have fewer than 3 goals, add more from the predefined list
+  if (studyData.activeGoals.length < 3) {
+    // Get all available goals that aren't already active
+    const currentActiveIds = studyData.activeGoals.map((goal) => goal.id)
+    const availableGoals = predefinedGoals.filter((goal) => !currentActiveIds.includes(goal.id))
+
+    // Shuffle the available goals
+    const shuffledGoals = shuffleArray([...availableGoals])
+
+    // Add enough goals to reach 3 total
+    const goalsToAdd = Math.min(3 - studyData.activeGoals.length, shuffledGoals.length)
+
+    for (let i = 0; i < goalsToAdd; i++) {
+      studyData.activeGoals.push({
+        id: shuffledGoals[i].id,
+        startedAt: new Date().toISOString(),
+        completed: false,
+      })
+    }
+  }
+
+  // Save the updated data
+  saveData()
+  console.log("Daily goals assigned:", studyData.activeGoals)
 }
 
 // Add a shuffle array utility function
@@ -839,7 +1102,7 @@ function updatePredefinedGoalsList() {
   }
 }
 
-// Update the updateActiveGoalsList function to remove the accept button
+// Update the updateActiveGoalsList function to show repeated goals differently
 function updateActiveGoalsList() {
   if (!activeGoalsListElement) return
 
@@ -879,11 +1142,17 @@ function updateActiveGoalsList() {
     }
 
     const goalCard = document.createElement("div")
-    goalCard.className = `active-goal-card ${isCompleted ? "completed" : ""}`
+    goalCard.className = `active-goal-card ${isCompleted ? "completed" : ""} ${activeGoal.repeatedFromPreviousDay ? "repeated-goal" : ""}`
 
     const title = document.createElement("div")
     title.className = "active-goal-title"
-    title.innerHTML = `<i class="fas ${goalData.icon}"></i> ${goalData.title}`
+
+    // Add a special icon for repeated goals
+    if (activeGoal.repeatedFromPreviousDay) {
+      title.innerHTML = `<i class="fas "></i> ${goalData.title} <span class="repeated-badge"><i class="fas fa-sync-alt"></i></span>`
+    } else {
+      title.innerHTML = `<i class="fas ${goalData.icon}"></i> ${goalData.title}`
+    }
 
     const description = document.createElement("div")
     description.className = "active-goal-description"
@@ -1055,6 +1324,8 @@ function calculateTodayTotal() {
 
 // Update the updateSessionsList function to display tags
 function updateSessionsList() {
+  if (!sessionsListElement) return
+
   sessionsListElement.innerHTML = ""
 
   if (studyData.sessions.length === 0) {
@@ -1093,7 +1364,10 @@ function updateSessionsList() {
 
 // Update chart
 function updateChart() {
-  const ctx = document.getElementById("study-chart").getContext("2d")
+  const chartElement = document.getElementById("study-chart")
+  if (!chartElement) return
+
+  const ctx = chartElement.getContext("2d")
 
   // Prepare data for chart
   const subjects = {}
@@ -1182,7 +1456,7 @@ function generateColors(count) {
 }
 
 // Update the addStudySession function to include streak flame updates and fireworks
-function addStudySession(subject, time, tag) {
+function addStudySession(subject, time, tag, topic) {
   // Get current date and time
   const now = new Date()
   const currentHour = now.getHours()
@@ -1195,6 +1469,7 @@ function addStudySession(subject, time, tag) {
     timestamp: now.toISOString(),
     hour: currentHour,
     tag: tag,
+    topic: topic,
   }
 
   // Add session to today's sessions
@@ -1253,8 +1528,15 @@ function addStudySession(subject, time, tag) {
   // Store old XP for level up check
   const oldXP = studyData.xp
 
-  // Add XP (1 XP per minute)
-  studyData.xp += time
+  // Drain energy based on study time
+  const currentEnergy = drainEnergy(time)
+
+  // Add XP (1 XP per minute) only if user has energy
+  if (hasEnoughEnergy()) {
+    studyData.xp += time
+  } else {
+    showNotification("No Energy!", "You're out of energy! Take a break to regenerate energy and earn XP again.")
+  }
 
   // Check for level up
   const newLevel = levelSystem.checkLevelUp(oldXP, studyData.xp)
@@ -1264,7 +1546,8 @@ function addStudySession(subject, time, tag) {
     updateProfileOnLevelUp(newLevel)
     createFireworks() // Add fireworks for level up
   }
-
+  // Check for burnout warning
+  checkBurnoutWarning()
   // Check active goals for completion
   studyData.activeGoals.forEach((activeGoal) => {
     if (activeGoal.completed) return
@@ -1303,146 +1586,61 @@ function addStudySession(subject, time, tag) {
       }
     })
 
-    // Add earned XP
-    if (xpEarned > 0) {
+    // Add earned XP only if user has energy
+    if (xpEarned > 0 && hasEnoughEnergy()) {
       studyData.xp += xpEarned
     }
   }
 
   updateGoalProgress(subject, time)
+  // Check for burnout warning
+  checkBurnoutWarning()
 
+  // Check for shadow achievements
+  if (window.shadowAchievements) {
+    window.shadowAchievements.checkAchievements()
+
+    // Dispatch event to notify of data update
+    document.dispatchEvent(new CustomEvent("studyDataUpdated"))
+  }
   // Save and update UI
   saveData()
   updateUI()
 }
 
 // Event Listeners
-studyForm.addEventListener("submit", (e) => {
-  e.preventDefault()
+if (studyForm) {
+  studyForm.addEventListener("submit", (e) => {
+    e.preventDefault()
 
-  const subject = subjectInput.value.trim()
-  const time = Number.parseInt(timeInput.value)
-  const tag = sessionTagInput.value
+    const subject = subjectInput.value.trim()
+    const time = Number.parseInt(timeInput.value)
+    const tag = sessionTagInput ? sessionTagInput.value : null
+    const topic = topicInput ? topicInput.value.trim() : null
 
-  if (subject && time > 0) {
-    addStudySession(subject, time, tag)
+    if (subject && time > 0) {
+      addStudySession(subject, time, tag, topic)
 
-    // Reset form
-    subjectInput.value = ""
-    timeInput.value = ""
-    // Don't reset tag, keep the last selected option
-  }
-})
-
-resetDataButton.addEventListener("click", resetAllData)
-
-themeToggle.addEventListener("click", toggleDarkMode)
-
-// Load theme if saved
-const savedThemeId = localStorage.getItem("themeId")
-if (savedThemeId) {
-  const storeData = JSON.parse(localStorage.getItem("storeData") || '{"inventory":[]}')
-  const theme = storeData.inventory.find((item) => item.id === savedThemeId)
-  if (theme) {
-    applyThemeToUI(savedThemeId)
-  }
+      // Reset form
+      subjectInput.value = ""
+      timeInput.value = ""
+      if (sessionTagInput) sessionTagInput.value = ""
+      if (topicInput) topicInput.value = ""
+    }
+  })
+}
+if (resetDataButton) {
+  resetDataButton.addEventListener("click", resetAllData)
 }
 
-// Apply theme to UI
-function applyThemeToUI(themeId) {
-  // Remove existing theme classes
-  document.body.classList.remove(
-    "theme-dark-forest", 
-    "theme-ocean-blue", 
-    "theme-sunset", 
-    "theme-purple-haze", 
-    "theme-mint-fresh", 
-    "theme-dark-mode-pro", 
-    "theme-coral-reef", 
-    "theme-cherry-blossom", 
-    "theme-cyber-punk"
-  )
-
-  // Add new theme class
-  if (themeId === "theme_dark_forest") {
-    document.body.classList.add("theme-dark-forest")
-    document.documentElement.style.setProperty("--primary-color", "#2ecc71")
-    document.documentElement.style.setProperty("--primary-dark", "#27ae60")
-    document.documentElement.style.setProperty("--primary-light", "#a3e4c1")
-  } else if (themeId === "theme_ocean_blue") {
-    document.body.classList.add("theme-ocean-blue")
-    document.documentElement.style.setProperty("--primary-color", "#3498db")
-    document.documentElement.style.setProperty("--primary-dark", "#2980b9")
-    document.documentElement.style.setProperty("--primary-light", "#a9cce3")
-  } else if (themeId === "theme_sunset") {
-    document.body.classList.add("theme-sunset")
-    document.documentElement.style.setProperty("--primary-color", "#e67e22")
-    document.documentElement.style.setProperty("--primary-dark", "#d35400")
-    document.documentElement.style.setProperty("--primary-light", "#f5cba7")
-  } else if (themeId === "theme_purple_haze") {
-    document.body.classList.add("theme-purple-haze")
-    document.documentElement.style.setProperty("--primary-color", "#9b59b6")
-    document.documentElement.style.setProperty("--primary-dark", "#8e44ad")
-    document.documentElement.style.setProperty("--primary-light", "#d7bde2")
-  } else if (themeId === "theme_mint_fresh") {
-    document.body.classList.add("theme-mint-fresh")
-    document.documentElement.style.setProperty("--primary-color", "#1abc9c")
-    document.documentElement.style.setProperty("--primary-dark", "#16a085")
-    document.documentElement.style.setProperty("--primary-light", "#a3e4d7")
-  } else if (themeId === "theme_dark_mode_pro") {
-    document.body.classList.add("theme-dark-mode-pro")
-    document.documentElement.style.setProperty("--primary-color", "#6c5ce7")
-    document.documentElement.style.setProperty("--primary-dark", "#5641e5")
-    document.documentElement.style.setProperty("--primary-light", "#a29bfe")
-  } else if (themeId === "theme_coral_reef") {
-    document.body.classList.add("theme-coral-reef")
-    document.documentElement.style.setProperty("--primary-color", "#ff7675")
-    document.documentElement.style.setProperty("--primary-dark", "#e84393")
-    document.documentElement.style.setProperty("--primary-light", "#fab1a0")
-  } else if (themeId === "theme_cherry_blossom") {
-    document.body.classList.add("theme-cherry-blossom")
-    document.documentElement.style.setProperty("--primary-color", "#fd79a8")
-    document.documentElement.style.setProperty("--primary-dark", "#e84393")
-    document.documentElement.style.setProperty("--primary-light", "#ffeaa7")
-  } else if (themeId === "theme_cyber_punk") {
-    document.body.classList.add("theme-cyber-punk")
-    document.documentElement.style.setProperty("--primary-color", "#00f5d4")
-    document.documentElement.style.setProperty("--primary-dark", "#00b8a9")
-    document.documentElement.style.setProperty("--primary-light", "#f706cf")
-  }
-
-  // Save theme preference
-  localStorage.setItem("themeId", themeId)
-}
-resetDataButton.addEventListener("click", resetAllData)
-
-themeToggle.addEventListener("click", toggleDarkMode)
-document.addEventListener("DOMContentLoaded", () => {
-  const nav = document.querySelector("nav ul")
-
-  // Add store link if it doesn't exist
-  if (nav && !document.querySelector('nav ul li a[href="store.html"]')) {
-    const storeItem = document.createElement("li")
-    storeItem.innerHTML = '<a href="store.html"><i class="fas fa-store"></i> Store</a>'
-    nav.appendChild(storeItem)
-  }
-
-  // Add profile link if it doesn't exist
-  if (nav && !document.querySelector('nav ul li a[href="profile.html"]')) {
-    const profileItem = document.createElement("li")
-    profileItem.innerHTML = '<a href="profile.html"><i class="fas fa-user"></i> Profile</a>'
-    nav.appendChild(profileItem)
-  }
-})
-
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/sw.js").then(() => {
-    console.log("Service Worker Registered");
-  });
+if (themeToggle) {
+  themeToggle.addEventListener("click", toggleDarkMode)
 }
 
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM loaded, initializing app...")
+
   // Load dark mode preference
   if (localStorage.getItem("darkMode") === "true") {
     document.body.classList.add("dark-mode")
@@ -1450,4 +1648,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load data
   loadData()
+})
+
+// Add this code at the end of the file to check for "The Accidental Genius" achievement
+
+// Check for "The Accidental Genius" achievement on page load
+document.addEventListener("DOMContentLoaded", () => {
+  // Check if it's 4:04 PM
+  const now = new Date()
+  const hours = now.getHours()
+  const minutes = now.getMinutes()
+
+  if (hours === 16 && minutes === 4) {
+    // If shadow achievements are loaded, check for the achievement
+    if (window.shadowAchievements) {
+      window.shadowAchievements.checkAchievements()
+
+      // Special message for 4:04 PM
+      setTimeout(() => {
+        showNotification("404", "Time not found... or was it?")
+      }, 1000)
+    }
+  }
 })

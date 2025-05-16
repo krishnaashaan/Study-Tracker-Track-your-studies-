@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Galaxy - Study Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="galaxy.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="theme-styles.css">
+</head>
+<body class="light-mode">
+  <div class="container">
+    <header>
+      <h1>Study Galaxy <i class="fa-solid fa-rocket"></i></h1>
+      <div class="theme-toggle">
+        <i class="fas fa-moon"></i>
+      </div>
+    </header>
+
+    <nav>
+      <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="achievements.html"><i class="fas fa-trophy"></i> Achievements</a></li>
+        <li><a href="statistics.html"><i class="fas fa-chart-line"></i> Stats</a></li>
+        <li><a href="assignments.html"><i class="fas fa-tasks"></i> Assignments</a></li>
+        <li><a href="pomodoro.html"><i class="fas fa-clock"></i> Pomodoro</a></li>
+        <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+        <li class="active"><a href="galaxy.html"><i class="fas fa-star"></i> Galaxy</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <div class="galaxy-info">
+        <h2>Your Cosmic Learning Journey</h2>
+        <p>Welcome to your Study Galaxy! This visualization represents your learning journey as a cosmic galaxy. Each star is a subject you've studied, with orbiting planets representing specific topics. The size and brightness of stars reflect your study time, while connections between stars show related subjects.</p>
+        <p>Stars are categorized using the OBAFGKM spectral classification system, from hot blue giants (most study time) to cool red dwarfs (less study time). The more you study a subject and maintain streaks, the more massive and hotter your star becomes!</p>
+        <p>Explore your galaxy by dragging to move around and using the mouse wheel to zoom. Click on any star to see detailed information about that subject.</p>
+      </div>
+
+      <div class="galaxy-controls">
+        <div class="control-group">
+          <button id="zoom-in" class="control-btn" title="Zoom In">
+            <i class="fas fa-plus"></i>
+          </button>
+          <button id="zoom-out" class="control-btn" title="Zoom Out">
+            <i class="fas fa-minus"></i>
+          </button>
+          <button id="reset-view" class="control-btn" title="Reset View">
+            <i class="fas fa-home"></i>
+          </button>
+        </div>
+        
+        <div class="legend">
+          <h3>Subjects Legend</h3>
+          <!-- Legend items will be added dynamically -->
+        </div>
+        
+        <div class="spectral-type-legend">
+          <h3>Star Types (Spectral Classification)</h3>
+          <div class="spectral-type-item">
+            <span class="spectral-type-color star-type-blue-giant"></span>
+            <span>O: Blue Giant</span>
+          </div>
+          <div class="spectral-type-item">
+            <span class="spectral-type-color star-type-blue-main-sequence"></span>
+            <span>B: Blue Main Sequence</span>
+          </div>
+          <div class="spectral-type-item">
+            <span class="spectral-type-color star-type-white-main-sequence"></span>
+            <span>A: White Main Sequence</span>
+          </div>
+          <div class="spectral-type-item">
+            <span class="spectral-type-color star-type-yellow-white-main-sequence"></span>
+            <span>F: Yellow-White</span>
+          </div>
+          <div class="spectral-type-item">
+            <span class="spectral-type-color star-type-yellow-main-sequence"></span>
+            <span>G: Yellow</span>
+          </div>
+          <div class="spectral-type-item">
+            <span class="spectral-type-color star-type-orange-main-sequence"></span>
+            <span>K: Orange</span>
+          </div>
+          <div class="spectral-type-item">
+            <span class="spectral-type-color star-type-red-dwarf"></span>
+            <span>M: Red Dwarf</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="galaxy-container">
+        <canvas id="galaxy-canvas"></canvas>
+        
+        <div id="subject-info" class="subject-info">
+          <div class="subject-info-header">
+            <h3 id="subject-name">Subject Name</h3>
+            <button id="close-info" class="close-btn">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          
+          <div class="subject-stats">
+            <div class="stat-item">
+              <i class="fas fa-clock"></i>
+              <span id="subject-hours">0 hrs 0 min</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-calendar-check"></i>
+              <span id="subject-sessions">0 sessions</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-fire"></i>
+              <span id="subject-streak">0 day streak</span>
+            </div>
+          </div>
+          
+          <div class="subject-topics">
+            <h4>Topics</h4>
+            <ul id="topic-list">
+              <!-- Topics will be added dynamically -->
+            </ul>
+          </div>
+          
+          <div class="subject-history">
+            <h4>Recent Sessions</h4>
+            <ul id="session-list">
+              <!-- Sessions will be added dynamically -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="theme-manager.js"></script>
+  <script src="galaxy.js"></script>
+  <script src="update-nav.js"></script>
+</body>
+</html>

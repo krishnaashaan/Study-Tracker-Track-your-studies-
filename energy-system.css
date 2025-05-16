@@ -1,0 +1,221 @@
+/* Energy System Styles */
+
+.energy-container {
+    position: relative;
+    background-color: var(--card-bg-light);
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: var(--shadow-light);
+    margin-bottom: 20px;
+    transition: var(--transition);
+    overflow: hidden;
+  }
+  
+  body.dark-mode .energy-container {
+    background-color: var(--card-bg-dark);
+    box-shadow: var(--shadow-dark);
+  }
+  
+  .energy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .energy-title {
+    font-weight: bold;
+    color: var(--text-color-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  body.dark-mode .energy-title {
+    color: var(--text-color-dark);
+  }
+  
+  .energy-title i {
+    color: var(--accent-color);
+  }
+  
+  .energy-info {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+  }
+  
+  .energy-info {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+    overflow: visible; 
+    z-index: 50; 
+  }
+  
+  body.dark-mode .energy-info i {
+    color: var(--text-color-dark);
+  }
+  
+  .energy-tooltip {
+    position: absolute;
+    bottom: 125%; /* Move it higher above the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--card-bg-light);
+    color: var(--text-color-light);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+    width: 220px;
+    z-index: 100;
+    display: none;
+    text-align: center;
+    border: 1px solid var(--border-color-light);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    opacity: 0;
+   transition: opacity 0.3s ease;
+  }
+  
+  body.dark-mode .energy-tooltip {
+    background-color: var(--card-bg-dark);
+    color: var(--text-color-dark);
+    box-shadow: var(--shadow-dark);
+    border-color: var(--border-color-dark);
+  }
+  
+  .energy-info:hover .energy-tooltip {
+    opacity: 1;
+    display: block;
+  }
+  
+  .energy-bar {
+    height: 12px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+}
+  
+  body.dark-mode .energy-bar {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+ .energy-bar-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 6px;
+    transition: width 0.5s ease, background-color 0.5s ease;
+}
+
+.energy-bar-fill.high {
+    background-color: #4caf50;
+    background-image: linear-gradient(90deg, #4caf50, #8bc34a);
+}
+  
+  .energy-bar-fill.medium {
+    background-color: #ffc107;
+    background-image: linear-gradient(90deg, #ffc107, #ffeb3b);
+  }
+  
+  .energy-bar-fill.low {
+    background-color: #f44336;
+    background-image: linear-gradient(90deg, #f44336, #ff5722);
+  }
+  
+  .energy-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+  }
+  
+  .energy-warning {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #f44336;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    height: 150px;
+    width: 250px;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  .energy-warning.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  .energy-warning h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+  }
+  
+  .energy-warning p {
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  
+  .energy-warning p:last-child {
+    margin-bottom: 0;
+    opacity: 0.8;
+    font-size: 0.8rem;
+  }
+  
+  /* Energy animation for low energy */
+  @keyframes pulse-red {
+    0% {
+      box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(244, 67, 54, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(244, 67, 54, 0);
+    }
+  }
+  
+  .energy-bar-fill.low {
+    animation: pulse-red 2s infinite;
+  }
+  
+  /* Energy stats in stats section */
+  .energy-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+  }
+  
+  .energy-stat-item {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .energy-stat-label {
+    color: var(--text-color-light);
+    opacity: 0.8;
+  }
+  
+  body.dark-mode .energy-stat-label {
+    color: var(--text-color-dark);
+  }
+  
+  .energy-stat-value {
+    font-weight: bold;
+  }
+  

@@ -1,207 +1,81 @@
-/* Theme styles */
-:root {
-  /* Default theme variables are already in styles.css */
-}
+/* Theme Styles - Consistent theme application across all pages */
 
-/* Dark Forest Theme */
-body.theme-dark-forest {
-  --primary-color: #2ecc71;
-  --primary-dark: #27ae60;
-  --primary-light: #a3e4c1;
-  --accent-color: #8e44ad;
-  --bg-color-light: #2c3e50;
-  --bg-color-dark: #1a252f;
-  --card-bg-light: #34495e;
-  --card-bg-dark: #2c3e50;
-  --text-color-light: #ecf0f1;
-  --text-color-dark: #bdc3c7;
-  --border-color-light: #7f8c8d;
-  --border-color-dark: #95a5a6;
-}
-
-/* Ocean Blue Theme */
-body.theme-ocean-blue {
-  --primary-color: #3498db;
-  --primary-dark: #2980b9;
-  --primary-light: #a9cce3;
-  --accent-color: #e74c3c;
-  --bg-color-light: #1a5276;
-  --bg-color-dark: #154360;
-  --card-bg-light: #2874a6;
-  --card-bg-dark: #21618c;
-  --text-color-light: #ecf0f1;
-  --text-color-dark: #bdc3c7;
-  --border-color-light: #7f8c8d;
-  --border-color-dark: #95a5a6;
-}
-
-/* Sunset Theme */
-body.theme-sunset {
-  --primary-color: #e67e22;
-  --primary-dark: #d35400;
-  --primary-light: #f5cba7;
-  --accent-color: #3498db;
-  --bg-color-light: #f39c12;
-  --bg-color-dark: #e67e22;
-  --card-bg-light: #f1c40f;
-  --card-bg-dark: #f39c12;
-  --text-color-light: #2c3e50;
-  --text-color-dark: #34495e;
-  --border-color-light: #7f8c8d;
-  --border-color-dark: #95a5a6;
-}
-
-/* Purple Haze Theme */
-body.theme-purple-haze {
-  --primary-color: #9b59b6;
-  --primary-dark: #8e44ad;
-  --primary-light: #d7bde2;
-  --accent-color: #f1c40f;
-  --bg-color-light: #5b2c6f;
-  --bg-color-dark: #4a235a;
-  --card-bg-light: #6c3483;
-  --card-bg-dark: #5b2c6f;
-  --text-color-light: #ecf0f1;
-  --text-color-dark: #d7bde2;
-  --border-color-light: #7d3c98;
-  --border-color-dark: #6c3483;
-  --shadow-light: 0 4px 12px rgba(108, 52, 131, 0.2);
-  --shadow-dark: 0 4px 12px rgba(74, 35, 90, 0.4);
-}
-
-/* Mint Fresh Theme */
-body.theme-mint-fresh {
-  --primary-color: #1abc9c;
-  --primary-dark: #16a085;
-  --primary-light: #a3e4d7;
-  --accent-color: #e74c3c;
-  --bg-color-light: #e8f8f5;
-  --bg-color-dark: #d1f2eb;
-  --card-bg-light: #ffffff;
-  --card-bg-dark: #e8f8f5;
-  --text-color-light: #17706e;
-  --text-color-dark: #0e6251;
-  --border-color-light: #a3e4d7;
-  --border-color-dark: #76d7c4;
-  --shadow-light: 0 4px 12px rgba(22, 160, 133, 0.1);
-  --shadow-dark: 0 4px 12px rgba(22, 160, 133, 0.2);
-}
-
-/* Dark Mode Pro Theme */
-body.theme-dark-mode-pro {
-  --primary-color: #6c5ce7;
-  --primary-dark: #5641e5;
-  --primary-light: #a29bfe;
-  --accent-color: #fd79a8;
-  --bg-color-light: #1e1e2e;
-  --bg-color-dark: #181829;
-  --card-bg-light: #2d2d42;
-  --card-bg-dark: #252538;
-  --text-color-light: #dfe6e9;
-  --text-color-dark: #b2bec3;
-  --border-color-light: #4834d4;
-  --border-color-dark: #3c2db5;
-  --shadow-light: 0 4px 12px rgba(108, 92, 231, 0.2);
-  --shadow-dark: 0 4px 12px rgba(108, 92, 231, 0.4);
-}
-
-/* Coral Reef Theme */
-body.theme-coral-reef {
-  --primary-color: #fc8080;
-  --primary-dark: #e84393;
-  --primary-light: #fab1a0;
-  --accent-color: #00cec9;
-  --bg-color-light: #f8f9fa;
-  --bg-color-dark: #f1f2f6;
-  --card-bg-light: #ffffff;
-  --card-bg-dark: #f8f9fa;
-  --text-color-light: #2d3436;
-  --text-color-dark: #636e72;
-  --border-color-light: #fab1a0;
-  --border-color-dark: #ff7675;
-  --shadow-light: 0 4px 12px rgba(255, 118, 117, 0.15);
-  --shadow-dark: 0 4px 12px rgba(255, 118, 117, 0.25);
-}
-
-/* Cherry Blossom Theme */
-body.theme-cherry-blossom {
-  --primary-color: #fd79a8;
-  --primary-dark: #e84393;
-  --primary-light: #ffeaa7;
-  --accent-color: #00b894;
-  --bg-color-light: #fff0f5;
-  --bg-color-dark: #ffe6f2;
-  --card-bg-light: #ffffff;
-  --card-bg-dark: #fff0f5;
-  --text-color-light: #2d3436;
-  --text-color-dark: #636e72;
-  --border-color-light: #ffeaa7;
-  --border-color-dark: #fd79a8;
-  --shadow-light: 0 4px 12px rgba(253, 121, 168, 0.15);
-  --shadow-dark: 0 4px 12px rgba(253, 121, 168, 0.25);
-}
-
-/* Cyber Punk Theme */
-body.theme-cyber-punk {
-  --primary-color: #00f5d4;
-  --primary-dark: #00b8a9;
-  --primary-light: #f706cf;
-  --accent-color: #fee440;
-  --bg-color-light: #0d1b2a;
-  --bg-color-dark: #0a1622;
-  --card-bg-light: #1b263b;
-  --card-bg-dark: #162032;
-  --text-color-light: #e0fbfc;
-  --text-color-dark: #c2dfe3;
-  --border-color-light: #00f5d4;
-  --border-color-dark: #00b8a9;
-  --shadow-light: 0 4px 12px rgba(0, 245, 212, 0.2);
-  --shadow-dark: 0 4px 12px rgba(0, 245, 212, 0.4);
-}
-
-/* Theme preview styles for the store */
-.theme-preview.dark-forest {
-  background-color: #2c3e50;
-  color: #2ecc71;
-}
-
-.theme-preview.ocean-blue {
-  background-color: #1a5276;
-  color: #3498db;
-}
-
-.theme-preview.sunset {
-  background-color: #e67e22;
-  color: #f39c12;
-}
-
-.theme-preview.purple-haze {
-  background-color: #5b2c6f;
-  color: #9b59b6;
-}
-
-.theme-preview.mint-fresh {
-  background-color: #e8f8f5;
-  color: #1abc9c;
-}
-
-.theme-preview.dark-mode-pro {
-  background-color: #1e1e2e;
-  color: #6c5ce7;
-}
-
-.theme-preview.coral-reef {
-  background-color: #f8f9fa;
-  color: #ff7675;
-}
-
-.theme-preview.cherry-blossom {
-  background-color: #fff0f5;
-  color: #fd79a8;
-}
-
-.theme-preview.cyber-punk {
-  background-color: #0d1b2a;
-  color: #00f5d4;
-}
-
+/* Default Theme */
+.theme-default {
+    --primary-color: #4caf50;
+    --primary-dark: #388e3c;
+    --primary-light: #c8e6c9;
+    --accent-color: #ff9800;
+    --theme-header-bg: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  }
+  
+  /* Sunset Mode Theme */
+  .theme-sunset {
+    --primary-color: #ff9800;
+    --primary-dark: #f57c00;
+    --primary-light: #ffe0b2;
+    --accent-color: #ff5722;
+    --theme-header-bg: linear-gradient(135deg, #ff9800, #ff5722);
+  }
+  
+  /* Midnight Focus Theme */
+  .theme-midnight {
+    --primary-color: #3f51b5;
+    --primary-dark: #303f9f;
+    --primary-light: #c5cae9;
+    --accent-color: #00bcd4;
+    --theme-header-bg: linear-gradient(135deg, #3f51b5, #536dfe);
+  }
+  
+  /* Neon Hacker Theme */
+  .theme-neon {
+    --primary-color: #00e676;
+    --primary-dark: #00c853;
+    --primary-light: #b9f6ca;
+    --accent-color: #ff00ff;
+    --theme-header-bg: linear-gradient(135deg, #00e676, #00bcd4);
+  }
+  
+  /* Nature Calm Theme */
+  .theme-nature {
+    --primary-color: #8bc34a;
+    --primary-dark: #689f38;
+    --primary-light: #dcedc8;
+    --accent-color: #ffc107;
+    --theme-header-bg: linear-gradient(135deg, #8bc34a, #cddc39);
+  }
+  
+  /* Apply theme to common elements */
+  header {
+    background: var(--theme-header-bg);
+  }
+  
+  .btn.primary {
+    background-color: var(--primary-color);
+  }
+  
+  .btn.primary:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  /* Dark mode adjustments for themes */
+  body.dark-mode.theme-sunset {
+    --bg-color-dark: #1a1410;
+    --card-bg-dark: #2a2018;
+  }
+  
+  body.dark-mode.theme-midnight {
+    --bg-color-dark: #0a0a1a;
+    --card-bg-dark: #1a1a2e;
+  }
+  
+  body.dark-mode.theme-neon {
+    --bg-color-dark: #0a1a15;
+    --card-bg-dark: #0f2922;
+  }
+  
+  body.dark-mode.theme-nature {
+    --bg-color-dark: #121a0e;
+    --card-bg-dark: #1e2a16;
+  }
+  

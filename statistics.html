@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics - Study Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="study-iq.css">
+    <link rel="stylesheet" href="theme-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  .retention-decay-chart {
+    margin-top: 10px;
+    height: 100px;
+    width: 100%;
+  }
+  
+  .review-recommendation {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: var(--text-color);
+  }
+  
+  .review-recommendation i {
+    margin-right: 8px;
+    color: #4caf50;
+  }
+  
+  .retention-item {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background-color: var(--card-bg-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .retention-metrics {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+  }
+  
+  .retention-strength {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 15px;
+    min-width: 60px;
+  }
+  
+  .strength-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .strength-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary-color);
+  }
+  
+  .retention-progress {
+    flex: 1;
+    height: 10px;
+    background-color: var(--bg-color-light);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .retention-bar {
+    height: 100%;
+    border-radius: 5px;
+  }
+  
+  .retention-bar.strong {
+    background-color: #4caf50;
+  }
+  
+  .retention-bar.moderate {
+    background-color: #ffc107;
+  }
+  
+  .retention-bar.weak {
+    background-color: #f44336;
+  }
+  
+  .retention-subject {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .subject-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+  }
+  
+  .retention-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: var(--text-secondary-color);
+  }
+  
+  .forgetting-prediction {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: var(--text-color);
+  }
+  
+  .forgetting-prediction i {
+    margin-right: 8px;
+    color: #ff9800;
+  }
+  
+  /* Update the section title and description */
+  .retention-info-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .retention-science-link {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .retention-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .retention-modal-content {
+    background-color: var(--bg-color);
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  
+  .retention-modal-close {
+    float: right;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body class="light-mode">
+    <div class="container">
+        <header>
+            <h1>Statistics <i class="fa-solid fa-chart-line"></i></h1>
+            <div class="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </div>
+        </header>
+      
+        <nav>
+            <ul>
+                <li> <a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li ><a href="achievements.html"><i class="fas fa-trophy"></i> Achievements</a></li>
+                <li class="active"><a href="statistics.html"><i class="fas fa-chart-line"></i> Stats</a></li>
+                <li ><a href="assignments.html"><i class="fas fa-tasks"></i> Assignments</a></li>
+                <li ><a href="pomodoro.html"><i class="fas fa-clock"></i> Pomodoro</a></li>
+                <li > <a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                <li ><a href="galaxy.html"><i class="fas fa-star"></i> Galaxy</a></li>
+            </ul>
+           
+        </nav>
+        <main>
+            <section class="stats-overview">
+                <div class="stat-card">
+                    <h3>Total Study Time</h3>
+                    <p id="total-study-time">0 min</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Weekly Average</h3>
+                    <p id="weekly-average">0 min/day</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Monthly Average</h3>
+                    <p id="monthly-average">0 min/day</p>
+                </div>
+                <div class="stat-card study-iq-stat-card">
+                    <h3>Study IQ Score</h3>
+                    <p id="study-iq-score-display">--</p>
+                    <div class="mini-progress">
+                        <div class="mini-progress-bar" id="study-iq-mini-progress"></div>
+                    </div>
+                </div>
+            </section>
+
+            
+
+            <section class="chart-container">
+                <h2><i class="fa-solid fa-calendar-week"></i>Weekly Statistics</h2>
+                <div class="chart-wrapper">
+                    <canvas id="weekly-chart"></canvas>
+                </div>
+            </section>
+
+            <section class="chart-container">
+                <h2><i class="fa-solid fa-calendar-days"></i>Monthly Statistics</h2>
+                <div class="chart-wrapper">
+                    <canvas id="monthly-chart"></canvas>
+                </div>
+            </section>
+
+            <section class="subject-stats">
+                <h2><i class="fa-solid fa-book-open"></i>Subject Statistics</h2>
+                <div id="subject-stats-list" class="subject-stats-list">
+                    <!-- Subject stats will be added here dynamically -->
+                </div>
+            </section>
+            
+            <section class="insights-container">
+                <h2><i class="fas fa-lightbulb"></i> Personalized Study Insights</h2>
+                <div class="insights-description">Discover patterns in your study habits to optimize your learning.</div>
+                <div class="insights-grid">
+                    <div class="insight-card" id="productive-day-insight">
+                        <div class="insight-icon"><i class="fas fa-calendar-check"></i></div>
+                        <div class="insight-content">
+                            <h3 class="insight-title">Most Productive Day</h3>
+                            <p class="insight-text">Analyzing your study patterns...</p>
+                        </div>
+                    </div>
+                    <div class="insight-card" id="best-time-insight">
+                        <div class="insight-icon"><i class="fas fa-clock"></i></div>
+                        <div class="insight-content">
+                            <h3 class="insight-title">Best Study Time</h3>
+                            <p class="insight-text">Analyzing your study patterns...</p>
+                        </div>
+                    </div>
+                    <div class="insight-card" id="skip-day-insight">
+                        <div class="insight-icon"><i class="fas fa-calendar-times"></i></div>
+                        <div class="insight-content">
+                            <h3 class="insight-title">Study Consistency</h3>
+                            <p class="insight-text">Analyzing your study patterns...</p>
+                        </div>
+                    </div>
+                    <div class="insight-card" id="favorite-subject-insight">
+                        <div class="insight-icon"><i class="fas fa-book"></i></div>
+                        <div class="insight-content">
+                            <h3 class="insight-title">Favorite Subject</h3>
+                            <p class="insight-text">Analyzing your study patterns...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Add this new section for tag/type breakdown -->
+            <section class="insights-container">
+                <h2><i class="fas fa-tags"></i> Study Context Analysis</h2>
+                <div class="insights-description">Understand how you distribute your time across different study activities.</div>
+                
+                <div class="chart-container">
+                    <h3>Time Spent by Study Type</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="tags-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="insights-grid">
+                    <div class="insight-card" id="weekly-xp-insight">
+                        <div class="insight-icon"><i class="fas fa-award"></i></div>
+                        <div class="insight-content">
+                            <h3 class="insight-title">Weekly XP by Subject</h3>
+                            <p class="insight-text">Analyzing your XP earnings...</p>
+                        </div>
+                    </div>
+                    <div class="insight-card" id="focus-duration-insight">
+                        <div class="insight-icon"><i class="fas fa-hourglass-half"></i></div>
+                        <div class="insight-content">
+                            <h3 class="insight-title">Focus Duration Trend</h3>
+                            <p class="insight-text">Analyzing your session durations...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+         
+            
+           
+            <section class="insights-container">
+                <h2><i class="fas fa-star"></i> Achievement Highlights</h2>
+                <div class="insights-description">Celebrate your wins and identify areas for improvement.</div>
+                
+                <div class="highlights-grid">
+                    <div class="highlight-card" id="longest-session-highlight">
+                        <div class="highlight-icon"><i class="fas fa-fire"></i></div>
+                        <div class="highlight-content">
+                            <h3 class="highlight-title">Longest Study Session</h3>
+                            <p class="highlight-text">Analyzing your study sessions...</p>
+                        </div>
+                    </div>
+                    <div class="highlight-card" id="best-streak-highlight">
+                        <div class="highlight-icon"><i class="fas fa-trophy"></i></div>
+                        <div class="highlight-content">
+                            <h3 class="highlight-title">Best Goal Streak</h3>
+                            <p class="highlight-text">Analyzing your goal completions...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="highlight-card" id="weekly-comparison-highlight">
+                        <div class="highlight-icon"><i class="fas fa-chart-bar"></i></div>
+                        <div class="highlight-content">
+                            <h3 class="highlight-title">Weekly Comparison</h3>
+                            <p class="highlight-text">Analyzing your weekly progress...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Update the Topic Retention Strength section -->
+<section class="chart-container">
+  <div class="retention-info-header">
+    <h2><i class="fas fa-brain"></i> Topic Retention Strength</h2>
+    <span class="retention-science-link" id="retention-science-link">How it works</span>
+  </div>
+  <div class="insights-description">
+    Based on cognitive science and spaced repetition principles, this shows how well you're retaining knowledge over time.
+  </div>
+  <div class="retention-controls">
+    <div class="timeframe-selector">
+      <span>Timeframe:</span>
+      <div class="timeframe-buttons">
+        <button class="timeframe-btn active" data-days="7">7 Days</button>
+        <button class="timeframe-btn" data-days="14">14 Days</button>
+        <button class="timeframe-btn" data-days="30">1 Month</button>
+        <button class="timeframe-btn" data-days="90">3 Months</button>
+      </div>
+    </div>
+    <div class="retention-info">
+      <i class="fas fa-info-circle"></i>
+      <span class="tooltip">Retention strength measures how well you maintain knowledge of a topic over time. It's based on study frequency, recency, session quality, and spaced repetition principles.</span>
+    </div>
+  </div>
+  <div id="retention-topic-list" class="subject-stats-list">
+    <!-- Filled dynamically -->
+  </div>
+  <div class="retention-legend">
+    <div class="legend-item">
+      <div class="legend-color weak"></div>
+      <span>Weak (0-40%)</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color moderate"></div>
+      <span>Moderate (41-70%)</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color strong"></div>
+      <span>Strong (71-100%)</span>
+    </div>
+  </div>
+</section>
+              
+            <!-- Add Study IQ Score section -->
+            <section class="study-iq-container">
+                <h2><i class="fas fa-brain"></i> Study IQ Score</h2>
+                <div class="insights-description">A comprehensive measure of your study effectiveness, not just duration.</div>
+                
+                <div class="study-iq-score-container">
+                    <div class="study-iq-score-wrapper">
+                        <div class="study-iq-score" id="study-iq-score">
+                            <div class="score-value">--</div>
+                            <div class="score-label">Study IQ</div>
+                        </div>
+                        <div class="study-iq-feedback" id="study-iq-feedback">Analyzing your study patterns...</div>
+                    </div>
+                    
+                    <div class="study-iq-components">
+                        <div class="iq-component">
+                            <div class="component-header">
+                                <div class="component-icon"><i class="fas fa-calendar-check"></i></div>
+                                <div class="component-title">Consistency</div>
+                            </div>
+                            <div class="component-score" id="consistency-score">--</div>
+                            <div class="component-description">% of days studied in the past 7 days</div>
+                            <div class="component-progress">
+                                <div class="progress-bar" id="consistency-progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="iq-component">
+                            <div class="component-header">
+                                <div class="component-icon"><i class="fas fa-book"></i></div>
+                                <div class="component-title">Study Diversity</div>
+                            </div>
+                            <div class="component-score" id="diversity-score">--</div>
+                            <div class="component-description">Number of unique subjects studied recently</div>
+                            <div class="component-progress">
+                                <div class="progress-bar" id="diversity-progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="iq-component">
+                            <div class="component-header">
+                                <div class="component-icon"><i class="fas fa-hourglass-half"></i></div>
+                                <div class="component-title">Session Length</div>
+                            </div>
+                            <div class="component-score" id="session-length-score">--</div>
+                            <div class="component-description">Average session length (ideal: 25–60 min)</div>
+                            <div class="component-progress">
+                                <div class="progress-bar" id="session-length-progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="study-iq-details">
+                    <div class="study-iq-row">
+                        <div class="study-iq-card">
+                            <h3><i class="fas fa-chart-pie"></i> Subject Distribution</h3>
+                            <div class="subject-distribution-container">
+                                <div class="chart-wrapper">
+                                    <canvas id="subject-distribution-chart"></canvas>
+                                </div>
+                                <div class="distribution-rating" id="distribution-rating">
+                                    Analyzing your subject distribution...
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="study-iq-card">
+                            <h3><i class="fas fa-chart-line"></i> Study IQ History</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="study-iq-history-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="study-iq-card">
+                        <h3><i class="fas fa-graduation-cap"></i> IQ by Subject</h3>
+                        <div class="subject-iq-description">Individual Study IQ scores for each subject show how consistent and effective your study is for each topic.</div>
+                        <div class="subject-iq-grid" id="subject-iq-grid">
+                            <!-- Subject IQ cards will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="chart-container">
+                <h2><i class="fa-solid fa-calendar-days"></i>Monthly Study Calendar</h2>
+                <div class="calendar-controls">
+                    <button id="prev-month" class="btn secondary"><i class="fas fa-chevron-left"></i></button>
+                    <h3 id="calendar-month">Month Year</h3>
+                    <button id="next-month" class="btn secondary"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="calendar-wrapper">
+                    <div class="calendar-header">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+                    <div id="calendar-grid" class="calendar-grid">
+                        <!-- Calendar days will be added here dynamically -->
+                    </div>
+                </div>
+                <div class="calendar-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--bg-color-light);"></div>
+                        <span>No study</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #c8e6c9;"></div>
+                        <span> 30 min</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #81c784;"></div>
+                        <span>30-60 min</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #4caf50;"></div>
+                        <span>1-2 hours</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #2e7d32;"></div>
+                        <span>> 2 hours</span>
+                    </div>
+                </div>
+            </section>
+            
+            
+        </main>
+    </div>
+
+    <!-- Add the retention science modal -->
+<div class="retention-modal" id="retention-modal">
+  <div class="retention-modal-content">
+    <span class="retention-modal-close" id="retention-modal-close">&times;</span>
+    <h3>How Topic Retention Strength Works</h3>
+    <p>The Topic Retention Strength metric is based on cognitive science research on how memory works, particularly:</p>
+    
+    <h4>Ebbinghaus Forgetting Curve</h4>
+    <p>Hermann Ebbinghaus discovered that memory retention decreases over time according to a predictable pattern. Without reinforcement, information is lost exponentially.</p>
+    
+    <h4>Spaced Repetition</h4>
+    <p>Reviewing information at increasing intervals leads to stronger, longer-lasting memories than cramming or reviewing at fixed intervals.</p>
+    
+    <h4>Factors in Our Model:</h4>
+    <ul>
+      <li><strong>Recency:</strong> More recent study sessions have a stronger impact on current retention</li>
+      <li><strong>Frequency:</strong> More study sessions lead to stronger retention</li>
+      <li><strong>Spacing:</strong> Optimally spaced sessions (not too close, not too far apart) strengthen memory more effectively</li>
+      <li><strong>Session Quality:</strong> Sessions of optimal duration (25-45 minutes) are weighted more heavily</li>
+      <li><strong>Review vs. New Learning:</strong> Review sessions have a stronger effect on retention than learning new material</li>
+    </ul>
+    
+    <h4>Retention Decay Chart</h4>
+    <p>The chart shows the predicted decay of your memory over the next 14 days if no further study occurs. The 50% line indicates when you're likely to forget significant portions of the material.</p>
+    
+    <h4>Optimal Review Timing</h4>
+    <p>The system recommends the optimal time to review each topic to maximize long-term retention while minimizing study time, based on principles from spaced repetition systems like SuperMemo and Anki.</p>
+  </div>
+</div>
+
+    <script type="module" src="statistics.js"></script>
+    <script src="theme-manager.js"></script>
+    <script src="update-nav.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const scienceLink = document.getElementById('retention-science-link');
+    const modal = document.getElementById('retention-modal');
+    const closeBtn = document.getElementById('retention-modal-close');
+    
+    if (scienceLink && modal && closeBtn) {
+      scienceLink.addEventListener('click', function() {
+        modal.style.display = 'flex';
+      });
+      
+      closeBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+      });
+      
+      window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

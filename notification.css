@@ -10,17 +10,21 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   transform: translateX(120%);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
   max-width: 300px;
+  opacity: 0;
+  animation: slide-in 0.3s ease forwards;
 }
 
 .notification.show {
   transform: translateX(0);
+  opacity: 1;
 }
 
 .notification h3 {
   margin: 0 0 5px 0;
   font-size: 1rem;
+  font-weight: bold;
 }
 
 .notification p {
@@ -29,9 +33,33 @@
   opacity: 0.9;
 }
 
-/*  notification styles */
+/* Achievement notification styles */
+.notification.achievement-notification {
+  background-color: #9b59b6; /* Purple for achievements */
+  border-left: 5px solid #8e44ad;
+  animation: glow 2s infinite alternate;
+}
+
+.notification.achievement-notification h3 {
+  font-size: 1.2rem;
+  color: #f1c40f; /* Gold for achievement titles */
+}
+
+.notification.achievement-notification .achievement-icon {
+  font-size: 1.5rem;
+  margin-right: 10px;
+  color: #f39c12; /* Orange for icons */
+}
+
+.notification.achievement-notification p {
+  font-size: 0.95rem;
+  color: #ecf0f1; /* Light text */
+}
+
+/* Goal notification styles */
 .notification.goal-notification {
   background-color: var(--success-color);
+  border-left: 5px solid #27ae60;
 }
 
 .notification.goal-notification h3 {
@@ -43,12 +71,33 @@
   color: #ffeb3b;
 }
 
-/* styles for Pomodoro notifications */
+/* Pomodoro notification styles */
 .notification.pomodoro-notification {
   background-color: var(--accent-color);
+  border-left: 5px solid #e67e22;
 }
 
 .notification.pomodoro-notification h3 {
   font-size: 1.1rem;
 }
 
+/* Animations */
+@keyframes slide-in {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 10px rgba(155, 89, 182, 0.5), 0 0 20px rgba(155, 89, 182, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(155, 89, 182, 0.8), 0 0 30px rgba(155, 89, 182, 0.5);
+  }
+}

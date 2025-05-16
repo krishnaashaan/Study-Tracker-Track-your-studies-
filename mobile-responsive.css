@@ -1,0 +1,316 @@
+/* Mobile Responsive Enhancements */
+
+/* Base mobile styles */
+@media (max-width: 768px) {
+    /* General container adjustments */
+    .container {
+      padding: 10px;
+      width: 100%;
+      max-width: 100%;
+    }
+  
+    /* Improved touch targets */
+    button,
+    .btn,
+    select,
+    input[type="checkbox"],
+    input[type="radio"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  
+    /* Larger font sizes for better readability */
+    body {
+      font-size: 16px;
+    }
+  
+    /* Adjust header for mobile */
+    header {
+      padding: 12px;
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    header h1 {
+      font-size: 1.5rem;
+      text-align: center;
+      width: 100%;
+    }
+  
+    /* Improved navigation for mobile */
+    nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      border-radius: 0;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+  
+    body.dark-mode nav {
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+    }
+  
+    nav ul {
+      justify-content: space-around;
+    }
+  
+    nav ul li {
+      flex: 1;
+      min-width: auto;
+    }
+  
+    nav ul li a {
+      padding: 10px 5px;
+      font-size: 0.8rem;
+    }
+  
+    /* Add padding to main content to account for fixed nav */
+    main {
+      padding-bottom: 70px;
+    }
+  
+    /* Adjust form elements for better mobile experience */
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 14px;
+      font-size: 16px; /* Prevents iOS zoom on focus */
+    }
+  
+    /* Make buttons easier to tap */
+    .btn {
+      padding: 14px 20px;
+      font-size: 1rem;
+    }
+  
+    /* Adjust stats cards for mobile */
+    .stats-overview {
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+  
+    .stat-card {
+      padding: 15px 10px;
+    }
+  
+    .stat-card h3 {
+      font-size: 0.9rem;
+    }
+  
+    .stat-card p {
+      font-size: 1.3rem;
+    }
+  
+    /* Adjust chart container */
+    .chart-wrapper {
+      height: 250px;
+    }
+  
+    /* Adjust session items */
+    .session-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+    }
+  
+    .session-time {
+      align-self: flex-end;
+    }
+  
+    /* Adjust goals display */
+    .predefined-goals-list,
+    .active-goals-list {
+      grid-template-columns: 1fr;
+    }
+  
+    /* Adjust achievements display */
+    .achievements-list {
+      grid-template-columns: 1fr;
+    }
+  
+    /* Adjust subject stats */
+    .subject-stats-list {
+      grid-template-columns: 1fr;
+    }
+  
+    /* Adjust notifications for mobile */
+    .notification {
+      width: 90%;
+      left: 5%;
+      right: 5%;
+      bottom: 80px; /* Above the nav bar */
+    }
+  
+    /* Adjust level-up notification */
+    .level-up-notification {
+      width: 90%;
+      max-width: 90%;
+      padding: 15px;
+    }
+  
+    /* Adjust pomodoro timer for mobile */
+    .pomodoro-container {
+      grid-template-columns: 1fr;
+    }
+  
+    .timer-display-container {
+      width: 220px;
+      height: 220px;
+      margin: 0 auto;
+    }
+  
+    .timer-display .time {
+      font-size: 3rem;
+    }
+  
+    .control-btn {
+      width: 50px;
+      height: 50px;
+    }
+  
+    /* Adjust settings panel */
+    .settings-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    /* Adjust energy bar */
+    .energy-container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  
+    .energy-label {
+      margin-bottom: 5px;
+    }
+  
+    /* Improve touch targets for checkboxes and toggles */
+    .toggle-switch {
+      width: 60px;
+      height: 30px;
+    }
+  
+    .toggle-slider:before {
+      height: 22px;
+      width: 22px;
+    }
+  
+    input:checked + .toggle-slider:before {
+      transform: translateX(30px);
+    }
+  }
+  
+  /* Extra small devices */
+  @media (max-width: 480px) {
+    /* Further adjustments for very small screens */
+    .stats-overview {
+      grid-template-columns: 1fr;
+    }
+  
+    .timer-display-container {
+      width: 180px;
+      height: 180px;
+    }
+  
+    .timer-display .time {
+      font-size: 2.5rem;
+    }
+  
+    /* Simplify navigation icons */
+    nav ul li a i {
+      font-size: 1.2rem;
+      margin-bottom: 2px;
+    }
+  
+    nav ul li a span {
+      font-size: 0.7rem;
+    }
+  
+    /* Adjust form layout */
+    .form-row {
+      flex-direction: column;
+    }
+  
+    /* Adjust modal content */
+    .modal-content {
+      width: 95%;
+      padding: 15px;
+    }
+  }
+  
+  /* Landscape orientation adjustments */
+  @media (max-height: 500px) and (orientation: landscape) {
+    /* Adjust navigation for landscape */
+    nav {
+      position: static;
+      margin-bottom: 15px;
+    }
+  
+    main {
+      padding-bottom: 20px;
+    }
+  
+    /* Adjust pomodoro layout for landscape */
+    .pomodoro-container {
+      grid-template-columns: 1fr 1fr;
+    }
+  
+    .timer-card {
+      grid-column: span 1;
+    }
+  
+    .timer-display-container {
+      width: 150px;
+      height: 150px;
+    }
+  
+    .timer-display .time {
+      font-size: 2rem;
+    }
+  }
+  
+  /* Improve tap targets for interactive elements */
+  @media (max-width: 768px) {
+    /* Make all interactive elements at least 44x44px for touch */
+    button,
+    .btn,
+    select,
+    input[type="checkbox"],
+    input[type="radio"],
+    .action-btn,
+    .control-btn,
+    .theme-toggle,
+    .toggle-switch,
+    .mode-btn {
+      min-height: 44px;
+      min-width: 44px;
+      touch-action: manipulation;
+    }
+  
+    /* Add spacing between interactive elements */
+    .form-actions,
+    .timer-controls,
+    .active-goal-actions {
+      gap: 15px;
+    }
+  
+    /* Ensure form inputs are large enough */
+    input,
+    select,
+    textarea {
+      font-size: 16px !important; /* Prevents iOS zoom */
+      padding: 12px !important;
+    }
+  
+    /* Improve scrolling */
+    .sessions-list,
+    .history-list,
+    .goals-list {
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+  

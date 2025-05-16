@@ -2,33 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Study Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="level-system.css">
-    <link rel="stylesheet" href="notification.css">
-    <link rel="stylesheet" href="streak-animation.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="streak-animations.css">
+    <link rel="stylesheet" href="energy-system.css">
+    <link rel="stylesheet" href="shadow-achievements.css">
+    <link rel="stylesheet" href="mobile-responsive.css">
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="theme-styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="manifest" href="/manifest.json">
+
 </head>
 <body class="light-mode">
     <div class="container">
         <header>
-            <h1>Study Tracker</h1>
+            <h1>Study Tracker <img src="logo.png" alt="icon" class="header-icon" width="30" height="30"></h1>
             <div class="theme-toggle">
                 <i class="fas fa-moon"></i>
             </div>
+            
         </header>
 
         <nav>
             <ul>
                 <li class="active"><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="ach.html"><i class="fas fa-trophy"></i> Achievements</a></li>
-                <li><a href="stat.html"><i class="fas fa-chart-line"></i> Statistics</a></li>
-                <li><a href="store.html"><i class="fas fa-store"></i> Store</a></li>
+                <li><a href="achievements.html"><i class="fas fa-trophy"></i> Achievements</a></li>
+                <li><a href="statistics.html"><i class="fas fa-chart-line"></i> Stats</a></li>
+                <li><a href="assignments.html"><i class="fas fa-tasks"></i> Assignments</a></li>
                 <li><a href="pomodoro.html"><i class="fas fa-clock"></i> Pomodoro</a></li>
                 <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="galaxy.html"><i class="fas fa-star"></i> Galaxy</a></li>
             </ul>
         </nav>
 
@@ -54,14 +60,23 @@
                         <span id="next-level-xp">100 XP to Level 2</span>
                     </div>
                 </div>
-                <div class="level-perks">
-                    <div class="level-perks-title">Unlocked Perks</div>
-                    <div class="level-perks-list" id="level-perks-list">
-                        <!-- Perks will be added dynamically -->
+                <section class="energy-container">
+                    <div class="energy-header">
+                      <div class="energy-title">
+                        <i class="fas fa-bolt"></i>
+                        <span>Mental Energy</span>
+                      </div>
+                      <div class="energy-info">
+                      </div>
                     </div>
-                </div>
-            </section>
-
+                  
+                    <div class="energy-bar">
+                      <div id="energy-bar-fill" class="energy-bar-fill high" style="width: 100%"></div>
+                      <div id="energy-text" class="energy-text">100 EP</div>
+                    </div>
+                  </section>
+               </section>                  
+            
             <section class="stats-overview">
                 <div class="stat-card">
                     <h3>Today's Total</h3>
@@ -80,23 +95,29 @@
                     <h3>XP</h3>
                     <p id="xp-count">0 XP</p>
                 </div>
+                
             </section>
 
             <section class="active-goals-container">
-                <h2>Today's Goals</h2>
+                <h2><i class="fas fa-bullseye"></i> Today's Goals</h2>
                 <p class="goals-description">Complete these goals to earn XP and improve your study habits!</p>
                 <div class="active-goals-list" id="active-goals-list">
                     <!-- Active goals will be added here dynamically -->
                 </div>
-            </section>
+            </section> 
 
             <div class="main-content">
                 <section class="study-form">
-                    <h2>Add Study Session</h2>
+                    <h2><i class="fas fa-plus-circle"></i> Add Study Session</h2>
                     <form id="study-form">
                         <div class="form-group">
                             <label for="subject">Subject</label>
                             <input type="text" id="subject" placeholder="Enter subject name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="topic">Topic</label>
+                            <input type="text" id="topic" placeholder="Enter specific topic (optional)">
+                            <small class="form-hint">Topics appear as planets in your galaxy</small>
                         </div>
                         <div class="form-group">
                             <label for="time">Time (minutes)</label>
@@ -114,12 +135,12 @@
                                 <option value="Other">Other</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn primary">Add Session</button>
+                        <button type="submit" class="btn primary"><i class="fas fa-plus"></i> Add Session</button>
                     </form>
                 </section>
 
                 <section class="chart-container">
-                    <h2>Today's Distribution</h2>
+                    <h2><i class="fas fa-chart-pie"></i> Today's Distribution</h2>
                     <div class="chart-wrapper">
                         <canvas id="study-chart"></canvas>
                     </div>
@@ -127,33 +148,20 @@
             </div>
 
             <section class="today-sessions">
-                <h2>Today's Sessions</h2>
+                <h2><i class="fas fa-list"></i> Today's Sessions</h2>
                 <div class="sessions-list" id="sessions-list">
                     <!-- Sessions will be added here dynamically -->
                 </div>
             </section>
 
             <section class="actions">
-                <h2>Actions</h2>
-                <button id="reset-data" class="btn danger">Reset All Data</button>
+                <h2><i class="fas fa-cog"></i> Actions</h2>
+                <button id="reset-data" class="btn danger"><i class="fas fa-trash"></i> Reset All Data</button>
             </section>
         </main>
     </div>
-
+    <script src="theme-manager.js"></script>
     <script type="module" src="app.js"></script>
-    <script>
-       if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/sw.js")
-      .then((registration) => {
-        console.log("Service Worker registered:", registration);
-      })
-      .catch((error) => {
-        console.log("Service Worker registration failed:", error);
-      });
-  });
-}
-</script>
+    <script src="update-nav.js"></script>
 </body>
 </html>
-
